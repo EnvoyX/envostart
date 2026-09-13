@@ -231,7 +231,7 @@ function RouteComponent() {
                     />
                     {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
                       <p className="text-[11px] text-red-400">
-                        {field.state.meta.errors.join(", ")}
+                        {field.state.meta.errors.map((error) => error?.message)}
                       </p>
                     )}
                   </Field>
@@ -263,7 +263,7 @@ function RouteComponent() {
                     />
                     {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
                       <p className="text-[11px] text-red-400">
-                        {field.state.meta.errors.join(", ")}
+                        {field.state.meta.errors.map((error) => error?.message).join(", ")}
                       </p>
                     )}
                   </Field>

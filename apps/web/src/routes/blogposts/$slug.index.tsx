@@ -1,13 +1,13 @@
-import { createFileRoute, Link, notFound, redirect } from '@tanstack/react-router';
-import { createServerFn } from '@tanstack/react-start';
-import groq from 'groq';
-import { ArrowLeft } from 'lucide-react';
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import groq from "groq";
+import { ArrowLeft } from "lucide-react";
 
-import { SanityPortableText } from '@/components/web/SanityPortableText';
-import { sanityClient, urlFor } from '@/lib/sanity';
-import { getPreviewData } from '@/sanity/session';
+import { SanityPortableText } from "@/components/web/SanityPortableText";
+import { sanityClient, urlFor } from "@/lib/sanity";
+import { getPreviewData } from "@/sanity/session";
 
-const fetchPostBySlug = createServerFn({ method: 'GET' })
+const fetchPostBySlug = createServerFn({ method: "GET" })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug, context }) => {
     const query = groq`*[_type == "post" && slug.current == $slug][0]{
@@ -33,11 +33,11 @@ const fetchPostBySlug = createServerFn({ method: 'GET' })
     return post;
   });
 
-export const Route = createFileRoute('/blogposts/$slug/')({
-  beforeLoad: async ({ context }) => {
-    if (!context.session) throw redirect({ to: '/login' });
-    else if (context.user.role === 'USER') throw redirect({ to: '/envologs' });
-  },
+export const Route = createFileRoute("/blogposts/$slug/")({
+  // beforeLoad: async ({ context }) => {
+  //   if (!context.session) throw redirect({ to: '/login' });
+  //   else if (context.user.role === 'USER') throw redirect({ to: '/envologs' });
+  // },
   loader: async ({ params }) => {
     const post = await fetchPostBySlug({ data: params.slug });
     if (!post) throw notFound();
@@ -54,7 +54,7 @@ export const Route = createFileRoute('/blogposts/$slug/')({
     return {
       meta: [
         { title: `${post.title} | Blogposts` },
-        { name: 'description', content: post.excerpt || post.title },
+        { name: "description", content: post.excerpt || post.title },
       ],
     };
   },
@@ -102,10 +102,10 @@ function PostDetailPage() {
             <p className="font-medium text-neutral-900 dark:text-neutral-200">{post.author.name}</p>
           )}
           <time dateTime={post.publishedAt}>
-            {new Date(post.publishedAt).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
+            {new Date(post.publishedAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
             })}
           </time>
         </div>
@@ -114,7 +114,7 @@ function PostDetailPage() {
       {post.mainImage && (
         <div className="mb-10 overflow-hidden rounded-xl">
           <img
-            src={urlFor(post.mainImage).width(1200).height(675).fit('crop').url()}
+            src={urlFor(post.mainImage).width(1200).height(675).fit("crop").url()}
             alt={post.mainImage.alt || post.title}
             className="w-full h-auto aspect-video object-cover"
           />

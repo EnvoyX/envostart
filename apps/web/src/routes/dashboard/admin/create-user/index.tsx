@@ -86,7 +86,9 @@ function RouteComponent() {
                   className="w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm text-neutral-900 shadow-sm transition-colors placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-600 dark:focus:border-neutral-100 dark:focus:ring-neutral-100"
                 />
                 {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p className="text-xs text-red-500">{field.state.meta.errors.join(", ")}</p>
+                  <p className="text-xs text-red-500">
+                    {field.state.meta.errors.map((error) => error?.message).join(", ")}
+                  </p>
                 )}
               </div>
             )}
@@ -113,7 +115,9 @@ function RouteComponent() {
                   className="w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm text-neutral-900 shadow-sm transition-colors placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-600 dark:focus:border-neutral-100 dark:focus:ring-neutral-100"
                 />
                 {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p className="text-xs text-red-500">{field.state.meta.errors.join(", ")}</p>
+                  <p className="text-xs text-red-500">
+                    {field.state.meta.errors.map((error) => error?.message).join(", ")}
+                  </p>
                 )}
               </div>
             )}
@@ -140,7 +144,9 @@ function RouteComponent() {
                   className="w-full rounded-md border border-neutral-200 bg-transparent px-3 py-2 text-sm text-neutral-900 shadow-sm transition-colors placeholder:text-neutral-400 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:border-neutral-800 dark:text-neutral-100 dark:placeholder:text-neutral-600 dark:focus:border-neutral-100 dark:focus:ring-neutral-100"
                 />
                 {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <p className="text-xs text-red-500">{field.state.meta.errors.join(", ")}</p>
+                  <p className="text-xs text-red-500">
+                    {field.state.meta.errors.map((error) => error?.message).join(", ")}
+                  </p>
                 )}
               </div>
             )}
