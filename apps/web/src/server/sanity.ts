@@ -1,9 +1,7 @@
-import { createServerFn } from '@tanstack/react-start';
-import { getRequestHeaders } from '@tanstack/react-start/server';
+import { getPreviewData } from "@/sanity/session";
+import { createServerFn } from "@tanstack/react-start";
 
-export const checkSanityPreview = createServerFn({ method: 'GET' }).handler(async () => {
-  const headers = getRequestHeaders();
-  const cookieHeader = headers.get('Cookie') || '';
-  const isPreview = cookieHeader.includes('sanity-preview=true');
-  return { isPreview };
+export const checkSanityPreview = createServerFn({ method: "GET" }).handler(async ({ context }) => {
+  const { preview } = await getPreviewData(context.req);
+  return { isPreview: preview };
 });

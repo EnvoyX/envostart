@@ -5,11 +5,12 @@ import groq from 'groq';
 
 import { SanityPortableText } from '@/components/web/SanityPortableText';
 import { sanityClient, urlFor } from '@/lib/sanity';
+import { getPreviewData } from '@/sanity/session';
 
 // Server function fetching article data
 const fetchPostBySlug = createServerFn({ method: 'GET' })
   .validator((slug: string) => slug)
-  .handler(async ({ data: slug }) => {
+  .handler(async ({ data: slug, context }) => {
     const query = groq`*[_type == "post" && slug.current == $slug][0]{
           _id,
           title,
@@ -28,8 +29,8 @@ const fetchPostBySlug = createServerFn({ method: 'GET' })
           },
           tags
         }`;
-
-    const post = await sanityClient.fetch(query, { slug });
+    const { options } = await getPreviewData(context.req);
+    const post = await sanityClient.fetch(query, { slug }, options);
     return post;
   });
 

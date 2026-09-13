@@ -1,9 +1,9 @@
-import { createEnv } from "@t3-oss/env-core";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-core';
+import { z } from 'zod';
 
 export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(["development", "production"]).default("development"),
+    NODE_ENV: z.enum(['development', 'production']).default('development'),
     DATABASE_URL: z.url(),
     DIRECT_URL: z.url(),
     BETTER_AUTH_SECRET: z.string().min(1),
@@ -23,20 +23,21 @@ export const env = createEnv({
     UPLOADTHING_SECRET: z.string().min(1),
     UPLOADTHING_APP_ID: z.string().min(1),
     SANITY_API_READ_TOKEN: z.string().min(1),
+    SANITY_SESSION_SECRET: z.string().min(1),
   },
 
   /**
    * The prefix that client-side variables must have. This is enforced both at a type-level and at
    * runtime.
    */
-  clientPrefix: "VITE_",
+  clientPrefix: 'VITE_',
 
   client: {
     VITE_BASE_URL: z.string().min(1),
     VITE_STORYBLOK_DELIVERY_API_TOKEN: z.string().min(1),
-    VITE_SANITY_PROJECT_ID: z.string().min(1),
-    VITE_SANITY_DATASET: z.string().min(1),
-    VITE_SANITY_STUDIO_URL: z.url(),
+    // VITE_SANITY_PROJECT_ID: z.string().min(1),
+    // VITE_SANITY_DATASET: z.string().min(1),
+    // VITE_SANITY_STUDIO_URL: z.url(),
   },
 
   /**
@@ -64,11 +65,12 @@ export const env = createEnv({
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
-    VITE_SANITY_PROJECT_ID: process.env.VITE_SANITY_PROJECT_ID,
-    VITE_SANITY_DATASET: process.env.VITE_SANITY_DATASET,
-    VITE_SANITY_STUDIO_URL: process.env.VITE_SANITY_STUDIO_URL,
+    SANITY_SESSION_SECRET: process.env.SANITY_SESSION_SECRET,
     VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
     VITE_STORYBLOK_DELIVERY_API_TOKEN: import.meta.env.VITE_STORYBLOK_DELIVERY_API_TOKEN,
+    // VITE_SANITY_PROJECT_ID: process.env.VITE_SANITY_PROJECT_ID,
+    // VITE_SANITY_DATASET: process.env.VITE_SANITY_DATASET,
+    // VITE_SANITY_STUDIO_URL: process.env.VITE_SANITY_STUDIO_URL,
   },
 
   /**

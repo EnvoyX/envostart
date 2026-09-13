@@ -26,8 +26,10 @@ export default defineConfig({
             select: { title: "title", slug: "slug.current" },
             resolve: (doc) => ({
               locations: [
-                { title: doc?.title, href: `/envologs/${doc?.slug ?? ""}` },
                 { title: "Envologs", href: "/envologs" },
+                { title: doc?.title, href: `/envologs/${doc?.slug ?? ""}` },
+                { title: "Blogposts", href: "/blogposts" },
+                { title: doc?.title, href: `/blogposts/${doc?.slug ?? ""}` },
               ],
             }),
           }),

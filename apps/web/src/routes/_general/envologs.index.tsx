@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
-import groq from "groq";
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { createServerFn } from '@tanstack/react-start';
+import groq from 'groq';
 
-import { sanityClient, urlFor } from "@/lib/sanity";
+import { sanityClient, urlFor } from '@/lib/sanity';
+import { getPreviewData } from '@/sanity/session';
 
 interface PostSummary {
   _id: string;
@@ -15,7 +16,7 @@ interface PostSummary {
     asset: { _ref: string };
     alt?: string;
   };
-  visibility: "public" | "private";
+  visibility: 'public' | 'private';
   author?: {
     name: string;
     avatar?: { asset: { _ref: string } };
@@ -25,7 +26,7 @@ interface PostSummary {
   }>;
 }
 
-const fetchAllPosts = createServerFn({ method: "GET" }).handler(async () => {
+const fetchAllPosts = createServerFn({ method: 'GET' }).handler(async ({ context }) => {
   const query = groq`*[
       _type == "post" &&
       defined(slug.current)
@@ -46,26 +47,26 @@ const fetchAllPosts = createServerFn({ method: "GET" }).handler(async () => {
         title
       }
     }`;
-
-  return await sanityClient.fetch<PostSummary[]>(query);
+  const { options } = await getPreviewData(context.req);
+  return await sanityClient.fetch<PostSummary[]>(query, {}, options);
 });
 
-export const Route = createFileRoute("/_general/envologs/")({
+export const Route = createFileRoute('/_general/envologs/')({
   loader: async ({ context }) => {
     const posts = await fetchAllPosts();
     const filteredPosts = posts.filter((post) => {
-      if (!context.session) return post.visibility === "public";
-      else if (context.user.role === "USER") return post.visibility === "public";
+      if (!context.session) return post.visibility === 'public';
+      else if (context.user.role === 'USER') return post.visibility === 'public';
       return post;
     });
     return { filteredPosts };
   },
   head: () => ({
     meta: [
-      { title: "Envologs | Envostart" },
+      { title: 'Envologs | Envostart' },
       {
-        name: "description",
-        content: "Thoughts, perspectives, and opinions.",
+        name: 'description',
+        content: 'Thoughts, perspectives, and opinions.',
       },
     ],
   }),
@@ -101,15 +102,15 @@ function PostsListPage() {
             <Link
               to="/envologs/$slug"
               params={{ slug: post.slug.current }}
-              className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800"
+              className="relative aspect-video w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800"
             >
               {post.mainImage?.asset ? (
                 <img
                   src={urlFor(post.mainImage)
                     .width(600)
                     .height(338)
-                    .fit("crop")
-                    .auto("format")
+                    .fit('crop')
+                    .auto('format')
                     .url()}
                   alt={post.mainImage.alt || post.title}
                   loading="lazy"
@@ -152,22 +153,22 @@ function PostsListPage() {
                 <div className="flex items-center gap-2.5">
                   {post.author?.avatar?.asset && (
                     <img
-                      src={urlFor(post.author.avatar).width(48).height(48).fit("crop").url()}
+                      src={urlFor(post.author.avatar).width(48).height(48).fit('crop').url()}
                       alt={post.author.name}
                       className="h-7 w-7 rounded-full object-cover"
                     />
                   )}
                   <span className="text-xs font-medium text-neutral-800 dark:text-neutral-200">
-                    {post.author?.name || "Anonymous"}
+                    {post.author?.name || 'Anonymous'}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs text-neutral-500 dark:text-neutral-400">
                   <time dateTime={post.publishedAt}>
-                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
+                    {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
                     })}
                   </time>
                   {post.readingTime && (
