@@ -1,0 +1,154 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import z from "zod";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field, FieldGroup } from "@/components/ui/field";
+import { authClient } from "@/lib/auth-client";
+
+export const Route = createFileRoute("/_auth/login/")({
+  beforeLoad: async ({ context }) => {
+    if (context?.user) throw redirect({ to: "/dashboard" });
+    return;
+  },
+  loader: ({ context }) => {
+    return { user: context?.user };
+  },
+  validateSearch: zodValidator(
+    z.object({
+      callbackUrl: z.string().optional().default("/dashboard"),
+    }),
+  ),
+  head: () => ({
+    meta: [
+      { title: "Login | Envostart" },
+      {
+        name: "Envostart",
+        content: "Welcome to TanStack Start playground!",
+      },
+      { property: "og:title", content: "Login | Envostart" },
+      { property: "og:description", content: "Login to your account in Envostart" },
+      { property: "og:image", content: "https://tanstack.com/assets/og-C0HGjoLl.png" },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+  component: RouteComponent,
+});
+
+function RouteComponent() {
+  const { callbackUrl } = Route.useSearch();
+  const { user } = Route.useLoaderData();
+  const [isPending, setIsPending] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  async function handleLogin(provider: "github" | "google" | "discord") {
+    setIsPending(true);
+    await authClient.signIn.social({
+      provider: provider,
+      callbackURL: callbackUrl,
+      fetchOptions: {
+        onRequest() {
+          toast.loading(`Logging in with ${provider.toUpperCase()}...`, {
+            id: "login-oauth",
+          });
+        },
+        onSuccess: () => {
+          toast.dismiss("login-oauth");
+          toast.success(`Logged in with ${provider.toUpperCase()} successfully`);
+          setIsRedirecting(true);
+          setIsPending(false);
+        },
+
+        onError: ({ error }: { error: Error }) => {
+          toast.dismiss("login-oauth");
+          toast.error(`Failed to login with ${provider.toUpperCase()}`, {
+            description: error.message,
+          });
+          setIsPending(false);
+        },
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (!user) {
+      setIsRedirecting(false);
+    }
+  }, [user]);
+
+  if (isRedirecting) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center bg-transparent rounded-lg">
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="relative h-16 w-16">
+            <div className="absolute inset-0 rounded-full border-4 border-white/20" />
+            <div className="absolute inset-0 rounded-full border-4 border-white border-t-transparent animate-spin" />
+          </div>
+
+          <div className="mt-8 space-y-3 flex flex-col items-center">
+            <p className="text-lg font-semibold animate-pulse text-zinc-200">Redirecting...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <Card className="max-w-md w-full bg-zinc-950/80 border border-white/25 shadow-2xl backdrop-blur-xl">
+      <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription>Sign in to continue</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FieldGroup>
+          <Field>
+            <Button
+              onClick={async () => {
+                await handleLogin("google");
+              }}
+              variant="outline"
+              type="button"
+              className="cursor-pointer"
+              disabled={isPending}
+            >
+              <p className="flex items-center  gap-1">
+                <span className="icon-[material-icon-theme--google] size-5" />
+                <span>{isPending ? "Logging in..." : "Continue with Google"}</span>
+              </p>
+            </Button>
+            <Button
+              onClick={async () => {
+                await handleLogin("github");
+              }}
+              variant="outline"
+              type="button"
+              className="cursor-pointer"
+              disabled={isPending}
+            >
+              <p className="flex items-center gap-1">
+                <span className="icon-[mdi--github] size-6" />
+                <span>{isPending ? "Logging in..." : "Continue with Github"}</span>
+              </p>
+            </Button>
+            <Button
+              onClick={async () => {
+                await handleLogin("discord");
+              }}
+              variant="outline"
+              type="button"
+              className="cursor-pointer"
+              disabled={isPending}
+            >
+              <p className="flex items-center gap-1">
+                <span className="icon-[ic--baseline-discord] size-6" />
+                <span>{isPending ? "Logging in..." : "Continue with Discord"}</span>
+              </p>
+            </Button>
+          </Field>
+        </FieldGroup>
+      </CardContent>
+    </Card>
+  );
+}

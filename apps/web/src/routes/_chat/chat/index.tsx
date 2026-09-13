@@ -1,0 +1,109 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { Zap, Globe, Bot } from "lucide-react"; // Optional: Install lucide-react for icons
+
+import { Navbar } from "@/components/web/navbar";
+import { User } from "@/generated/prisma/client";
+
+export const Route = createFileRoute("/_chat/chat/")({
+  component: RouteComponent,
+  loader: ({ context }) => {
+    return {
+      user: context.user,
+    };
+  },
+  head: () => ({
+    meta: [
+      { title: `Chat | Envostart` },
+      {
+        name: "Envostart",
+        content: "Welcome to my TanStack Start playground!",
+      },
+      { property: "og:title", content: "Chat | Envostart" },
+      {
+        property: "og:description",
+        content: "Create your own blog and write your thoughts!",
+      },
+      {
+        property: "og:image",
+        content: "https://tanstack.com/assets/og-C0HGjoLl.png",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+});
+
+function RouteComponent() {
+  const { user } = Route.useLoaderData();
+  const models = [
+    {
+      id: "gemini",
+      name: "Gemini",
+      description:
+        "Google’s multimodal powerhouse. Features 1M+ context window and native video/audio processing.",
+      icon: <Bot className="w-6 h-6 text-blue-400" />,
+      color: "border-blue-500/20 hover:border-blue-500/50",
+      defaultModel: "gemini-2.5-flash",
+    },
+    {
+      id: "groq",
+      name: "Groq",
+      description:
+        "Insane inference speeds powered by LPU hardware. Ideal for real-time, ultra-fast chat responses.",
+      icon: <Zap className="w-6 h-6 text-orange-400" />,
+      color: "border-orange-500/20 hover:border-orange-500/50",
+      defaultModel: "llama-3.3-70b-versatile",
+    },
+    {
+      id: "openrouter",
+      name: "OpenRouter",
+      description:
+        "A unified gateway to every model imaginable. Compare prices and switch models on the fly.",
+      icon: <Globe className="w-6 h-6 text-cyan-400" />,
+      color: "border-cyan-500/20 hover:border-cyan-500/50",
+      defaultModel: "google/gemma-4-31b-it:free",
+    },
+  ];
+
+  return (
+    <section className="flex flex-col justify-center w-full ">
+      <Navbar user={user as User} />
+      <main className="min-h-screen w-full flex flex-col gap-4 items-center justify-center px-16 max-sm:px-8 md:p-12 overflow-y-auto">
+        <div className="relative z-10 text-center mt-16 mb-16 space-y-4">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground">
+            Let's Chat!
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+            Choose a provider to start a new conversation.
+          </p>
+        </div>
+
+        <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl px-16 max-sm:px-0">
+          {models.map((model) => (
+            <a
+              key={model.id}
+              href={`chat/${model.id}?model=${model.defaultModel}`}
+              className={`group relative flex flex-col p-8 max-sm:p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 ${model.color} hover:-translate-y-1`}
+            >
+              <div className="mb-4 p-3 rounded-lg bg-white/5 w-fit group-hover:scale-110 transition-transform max-sm:mx-auto">
+                {model.icon}
+              </div>
+              <h3 className="text-xl font-semibold mb-2 max-sm:mx-auto">{model.name}</h3>
+              <p className="text-sm text-gray-400 leading-relaxed max-sm:text-center">
+                {model.description}
+              </p>
+
+              <div className="mt-6 flex items-center text-xs font-medium text-gray-500 group-hover:text-white transition-colors max-sm:mx-auto">
+                START CHATTING
+                <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </a>
+          ))}
+        </div>
+
+        <div className="mt-20 text-muted-foreground text-xs tracking-widest uppercase">
+          Powered by TanStack AI
+        </div>
+      </main>
+    </section>
+  );
+}

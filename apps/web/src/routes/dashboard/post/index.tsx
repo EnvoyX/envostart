@@ -1,0 +1,317 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-adapter";
+import { compareAsc, compareDesc } from "date-fns";
+import { MoreVertical, Pencil, Plus, Trash2 } from "lucide-react";
+import { motion } from "motion/react";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { PostDialog } from "@/components/web/post/PostDialog";
+import { deleteShortPostFn } from "@/data/post";
+import { dashboardShortPostsOptions } from "@/data/query-options/dashboardQueryOptions";
+import { SortedByStatus } from "@/lib/constants";
+import { shortPostSearchSchema } from "@/schemas/post";
+import { usePostStore } from "@/store/post";
+
+export const Route = createFileRoute("/dashboard/post/")({
+  loader: ({ context }) => {
+    return {
+      user: context.user,
+    };
+  },
+  component: PostPageComponent,
+  validateSearch: zodValidator(shortPostSearchSchema),
+  head: () => ({
+    meta: [
+      { title: `My Post | Envostart` },
+      {
+        name: "Envostart",
+        content: "Welcome to my TanStack Start playground!",
+      },
+      { property: "og:title", content: "My Post | Envostart" },
+      {
+        property: "og:description",
+        content: "Create your own blog and write your thoughts!",
+      },
+      {
+        property: "og:image",
+        content: "https://tanstack.com/assets/og-C0HGjoLl.png",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+});
+
+function PostPageComponent() {
+  const { user } = Route.useLoaderData();
+  const { queryClient } = Route.useRouteContext();
+  const { data: allPosts } = useSuspenseQuery({
+    ...dashboardShortPostsOptions(),
+  });
+  const { sortDateBy } = Route.useSearch();
+  const {
+    currentPostId,
+    isDeletePostDialog,
+    isOpen,
+    toggleDialog,
+    setInitialValues,
+    onOpenDialogChange,
+  } = usePostStore();
+  const navigate = useNavigate({ from: Route.fullPath });
+  const router = useRouter();
+  const sortedPosts = [...allPosts].sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+
+    if (sortDateBy === "ASC") {
+      return compareAsc(dateA, dateB);
+    } else {
+      return compareDesc(dateA, dateB);
+    }
+  });
+
+  async function handleDeletePost() {
+    await deleteShortPostFn({
+      data: {
+        shortPostId: currentPostId,
+      },
+    });
+    toggleDialog("close", "");
+    toast.success("Post deleted successfully");
+    void router.invalidate();
+    void queryClient.invalidateQueries({
+      queryKey: [...dashboardShortPostsOptions().queryKey],
+    });
+  }
+
+  return (
+    <div className="min-h-screen text-slate-50 p-8">
+      <div className="max-w-7xl mx-auto max-sm:flex max-sm:flex-col ">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
+          <div>
+            <h1 className="text-4xl font-black tracking-tight text-white">My Post</h1>
+            <p className="text-slate-400 mt-2">Create and edit your posts here.</p>
+          </div>
+          <Button
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl px-6 transition-all duration-300 shadow-sm group active:scale-95 cursor-pointer"
+            onClick={() => {
+              toggleDialog("open", "");
+              setInitialValues({
+                images: [] as { id?: string; url: string; title: string; description: string }[],
+                content: "",
+                published: false,
+                showPrivateToFollowers: false,
+                currentPostId: "",
+                mode: "create",
+              });
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <Plus className="size-5 group-hover:rotate-90 transition-transform duration-300" />
+              <span className="font-semibold tracking-tight">New Post</span>
+            </div>
+          </Button>
+        </div>
+
+        <div className="flex max-sm:flex-col items-center max-sm:justify-center gap-4 mb-8">
+          <div className="flex items-center gap-2 rounded-lg">
+            <h3 className="text-muted-foreground">Sort By:</h3>
+            <Select
+              value={sortDateBy}
+              onValueChange={(value) =>
+                navigate({
+                  search: (prev) => ({
+                    ...prev,
+                    sortDateBy: value as SortedByStatus,
+                  }),
+                })
+              }
+            >
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Sort By Date" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(SortedByStatus).map((status) => (
+                  <SelectItem key={status} value={status}>
+                    {status.charAt(0) + status.slice(1).toLowerCase()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {sortedPosts.length === 0 && (
+          <div className="text-center py-20 border-2 border-dashed border-slate-800 rounded-3xl">
+            <p className="text-slate-500">No posts found. Create your first post!</p>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mx-auto">
+          {sortedPosts.map((post) => {
+            const photos = post.imagesOnShortPosts.map((data) => ({
+              ...data.image,
+            }));
+            const imgs = photos.map((img) => img.url);
+            const firstImageUrl = imgs[0];
+            return (
+              <Link
+                to="/post/$postId"
+                params={{
+                  postId: post.id,
+                }}
+                key={post.id}
+              >
+                <Card
+                  key={post.id}
+                  className="group relative bg-slate-900/50 border-slate-800 hover:border-slate-700 transition-all duration-300 overflow-hidden flex flex-col hover:scale-105 max-w-xs py-0"
+                >
+                  <motion.div
+                    className="aspect-square relative overflow-hidden rounded-xl"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <img
+                      src={
+                        firstImageUrl
+                          ? firstImageUrl
+                          : "https://tanstack.com/images/logos/logo-color-600.png"
+                      }
+                      alt={post.id}
+                      className="object-cover w-full h-full transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-transparent opacity-60" />
+
+                    {post.authorId === user?.id && (
+                      <div className="absolute top-3 right-3 z-20">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="secondary"
+                              size="icon"
+                              className="size-8 rounded-full bg-slate-950/50 backdrop-blur-md border-slate-700 hover:bg-slate-800 cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                            >
+                              <MoreVertical className="size-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent
+                            align="end"
+                            className="w-40 bg-transparent backdrop-blur-lg border-slate-800 text-slate-200"
+                          >
+                            <DropdownMenuItem
+                              className="cursor-pointer"
+                              onSelect={(e) => {
+                                e.preventDefault();
+                              }}
+                              asChild
+                            >
+                              <button
+                                className="flex items-center gap-2 p-1 cursor-pointer w-full"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  toggleDialog("open", post.id);
+                                  setInitialValues({
+                                    images: photos.map((image) => {
+                                      return {
+                                        id: image.id,
+                                        url: image.url,
+                                        title: image.title ?? "",
+                                        description: image.description ?? "",
+                                      };
+                                    }),
+                                    content: post.content ?? "",
+                                    published: post.published,
+                                    showPrivateToFollowers: post.showPrivateToFollowers,
+                                    currentPostId: post.id,
+                                    mode: "edit",
+                                  });
+                                }}
+                              >
+                                <Pencil className="size-4" /> Edit Post
+                              </button>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleDialog("delete", post.id);
+                              }}
+                              className="focus:bg-red-500/20 text-red-400 focus:text-red-400 cursor-pointer"
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" />
+                              <span>Delete Post</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    )}
+                  </motion.div>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+      <Dialog
+        open={isOpen && isDeletePostDialog}
+        onOpenChange={(open) => {
+          onOpenDialogChange("delete", open);
+        }}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your account and remove
+              your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              type="button"
+              variant={"destructive"}
+              className="cursor-pointer"
+              onClick={handleDeletePost}
+            >
+              Delete Post
+            </Button>
+            <DialogClose asChild>
+              <Button type="button" className="cursor-pointer">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <PostDialog />
+    </div>
+  );
+}

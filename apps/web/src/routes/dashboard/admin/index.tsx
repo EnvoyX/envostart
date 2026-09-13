@@ -1,0 +1,74 @@
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AccountsDataTable from "@/components/web/admin/AccountsDataTable";
+import SessionsDataTable from "@/components/web/admin/SessionsDataTable";
+import { UsersDataTable } from "@/components/web/admin/UsersDataTable";
+import { allowedRoles } from "@/lib/constants";
+export const Route = createFileRoute("/dashboard/admin/")({
+  component: RouteComponent,
+  loader: async ({ context }) => {
+    if (!allowedRoles.includes(context?.user?.role as string)) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
+  head: () => ({
+    meta: [
+      { title: `Admin Panel | Envostart` },
+      {
+        name: "Envostart",
+        content: "Welcome to my TanStack Start playground!",
+      },
+      { property: "og:title", content: "Admin Panel | Envostart" },
+      {
+        property: "og:description",
+        content: "Create your own blog and write your thoughts!",
+      },
+      {
+        property: "og:image",
+        content: "https://tanstack.com/assets/og-C0HGjoLl.png",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
+});
+
+function RouteComponent() {
+  return (
+    <section className="min-h-screen bg-transparent w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div>
+        <h1 className="text-3xl font-bold text-foreground">Admin Panel</h1>
+      </div>
+      <Tabs defaultValue="account" className="mt-8 overflow-x-auto">
+        <TabsList className="bg-white/5 border overflow-auto flex h-fit sm:flex-row">
+          <TabsTrigger value="account" className="cursor-pointer">
+            Account
+          </TabsTrigger>
+          <TabsTrigger value="session" className="cursor-pointer">
+            Session
+          </TabsTrigger>
+          <TabsTrigger value="users" className="cursor-pointer">
+            Users
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <div className="mt-8">
+            <AccountsDataTable />
+          </div>
+        </TabsContent>
+        <TabsContent value="session">
+          <div className="mt-8">
+            <SessionsDataTable />
+          </div>
+        </TabsContent>
+        <TabsContent value="users">
+          <div className="mt-8">
+            <UsersDataTable />
+          </div>
+        </TabsContent>
+      </Tabs>
+    </section>
+  );
+}
