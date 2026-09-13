@@ -1,4 +1,4 @@
-import { createFileRoute, Link, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import groq from 'groq';
 
@@ -27,8 +27,7 @@ interface PostSummary {
 }
 
 const fetchAllPosts = createServerFn({ method: 'GET' }).handler(async ({ context }) => {
-  const query = groq`*[_type == "post" && defined(slug.current) &&
-  (visibility == "private" || !defined(visibility))] | order(publishedAt desc) {
+  const query = groq`*[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
     _id,
     title,
     slug,
@@ -50,10 +49,6 @@ const fetchAllPosts = createServerFn({ method: 'GET' }).handler(async ({ context
 });
 
 export const Route = createFileRoute('/_general/blogposts/')({
-  beforeLoad: async ({ context }) => {
-    if (!context.session) throw redirect({ to: '/login' });
-    else if (context.user.role === 'USER') throw redirect({ to: '/envologs' });
-  },
   loader: async () => {
     const posts = await fetchAllPosts();
     return { posts };

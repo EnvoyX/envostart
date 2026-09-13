@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound, redirect } from '@tanstack/react-router';
+import { createFileRoute, Link, notFound } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import groq from 'groq';
 import { ArrowLeft } from 'lucide-react';
@@ -10,7 +10,7 @@ import { getPreviewData } from '@/sanity/session';
 const fetchPostBySlug = createServerFn({ method: 'GET' })
   .validator((slug: string) => slug)
   .handler(async ({ data: slug, context }) => {
-    const query = groq`*[_type == "post" && slug.current == $slug && (visibility == "private" || !defined(visibility))][0]{
+    const query = groq`*[_type == "post" && slug.current == $slug][0]{
           _id,
           title,
           slug,
@@ -34,10 +34,6 @@ const fetchPostBySlug = createServerFn({ method: 'GET' })
   });
 
 export const Route = createFileRoute('/blogposts/$slug/')({
-  beforeLoad: async ({ context }) => {
-    if (!context.session) throw redirect({ to: '/login' });
-    else if (context.user.role === 'USER') throw redirect({ to: '/envologs' });
-  },
   loader: async ({ params }) => {
     const post = await fetchPostBySlug({ data: params.slug });
     if (!post) throw notFound();

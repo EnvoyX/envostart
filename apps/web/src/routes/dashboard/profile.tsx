@@ -1,8 +1,8 @@
-import { IconLogout2 } from "@tabler/icons-react";
-import { useLiveQuery } from "@tanstack/react-db";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-adapter";
+import { IconLogout2 } from '@tabler/icons-react';
+import { useLiveQuery } from '@tanstack/react-db';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { zodValidator } from '@tanstack/zod-adapter';
 import {
   Calendar,
   CheckCheck,
@@ -15,13 +15,13 @@ import {
   User,
   UserIcon,
   Users,
-} from "lucide-react";
-import { useTransition } from "react";
-import { toast } from "sonner";
+} from 'lucide-react';
+import { useTransition } from 'react';
+import { toast } from 'sonner';
 
-import { followColection } from "@/collections/follow";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { followColection } from '@/collections/follow';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,26 +30,26 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlbumCard } from "@/components/web/album/AlbumCard";
-import { BlogCard } from "@/components/web/BlogCard";
-import ConfirmDialog from "@/components/web/ConfirmDialog";
-import { EditProfileDialog } from "@/components/web/EditProfileDialog";
-import PhotoGallery from "@/components/web/PhotoGallery";
-import { ShortPostCard } from "@/components/web/post/ShortPostCard";
-import { UploadThingModal } from "@/components/web/uplooadthing/UploadThingModal";
-import { UserFollowDialog } from "@/components/web/UserFollowDialog";
-import { profileOptions } from "@/data/query-options/dashboardQueryOptions";
-import { UserSession } from "@/data/session";
-import { User as UserType } from "@/generated/prisma/client";
-import { authClient } from "@/lib/auth-client";
-import { profilePageSearchParamsSchema } from "@/schemas/searchSchemas";
-import { imageUploadModalStore } from "@/store/imageUploadStore";
-import { followDialogStore, useProfileStore } from "@/store/profile";
+} from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AlbumCard } from '@/components/web/album/AlbumCard';
+import { BlogCard } from '@/components/web/BlogCard';
+import ConfirmDialog from '@/components/web/ConfirmDialog';
+import { EditProfileDialog } from '@/components/web/EditProfileDialog';
+import PhotoGallery from '@/components/web/PhotoGallery';
+import { ShortPostCard } from '@/components/web/post/ShortPostCard';
+import { UploadThingModal } from '@/components/web/uplooadthing/UploadThingModal';
+import { UserFollowDialog } from '@/components/web/UserFollowDialog';
+import { profileOptions } from '@/data/query-options/dashboardQueryOptions';
+import { UserSession } from '@/data/session';
+import { User as UserType } from '@/generated/prisma/client';
+import { authClient } from '@/lib/auth-client';
+import { profilePageSearchParamsSchema } from '@/schemas/searchSchemas';
+import { imageUploadModalStore } from '@/store/imageUploadStore';
+import { followDialogStore, useProfileStore } from '@/store/profile';
 
-export const Route = createFileRoute("/dashboard/profile")({
+export const Route = createFileRoute('/dashboard/profile')({
   loader: ({ context }) => {
     context.queryClient.prefetchQuery(profileOptions());
     return {
@@ -61,21 +61,21 @@ export const Route = createFileRoute("/dashboard/profile")({
   validateSearch: zodValidator(profilePageSearchParamsSchema),
   head: () => ({
     meta: [
-      { title: "Profile | Envostart" },
+      { title: 'Profile | Envostart' },
       {
-        name: "Envostart",
-        content: "Welcome to TanStack Start playground!",
+        name: 'Envostart',
+        content: 'Welcome to TanStack Start playground!',
       },
-      { property: "og:title", content: "Profile | Envostart" },
+      { property: 'og:title', content: 'Profile | Envostart' },
       {
-        property: "og:description",
-        content: "View your profile information and settings",
+        property: 'og:description',
+        content: 'View your profile information and settings',
       },
       {
-        property: "og:image",
-        content: "https://tanstack.com/assets/og-C0HGjoLl.png",
+        property: 'og:image',
+        content: 'https://tanstack.com/assets/og-C0HGjoLl.png',
       },
-      { property: "og:type", content: "website" },
+      { property: 'og:type', content: 'website' },
     ],
   }),
   component: RouteComponent,
@@ -89,9 +89,9 @@ function RouteComponent() {
   const { data: user } = useSuspenseQuery(profileOptions());
   const { data: follows } = useLiveQuery((q) => q.from({ follow: followColection }));
   const { viewMode, toggleViewMode } = useProfileStore();
-  const viewAll = viewMode === "all";
-  const viewPublic = viewMode === "public";
-  const viewOnlyFollowers = viewMode === "showToFollowers";
+  const viewAll = viewMode === 'all';
+  const viewPublic = viewMode === 'public';
+  const viewOnlyFollowers = viewMode === 'showToFollowers';
 
   // filter datas
   const userBlogs = user?.posts.filter((blog) => {
@@ -136,21 +136,21 @@ function RouteComponent() {
       await authClient.signOut({
         fetchOptions: {
           onRequest: () => {
-            toast.loading("Logging out...", {
-              id: "logout",
+            toast.loading('Logging out...', {
+              id: 'logout',
             });
           },
           onError: ({ error }) => {
-            toast.dismiss("logout");
-            toast.error("Failed to log out", {
+            toast.dismiss('logout');
+            toast.error('Failed to log out', {
               description: error.message,
             });
           },
           onSuccess: () => {
-            toast.dismiss("logout");
-            toast.success("Logged out successfully");
+            toast.dismiss('logout');
+            toast.success('Logged out successfully');
             void navigate({
-              to: "/login",
+              to: '/login',
               reloadDocument: true,
             });
           },
@@ -171,20 +171,20 @@ function RouteComponent() {
                     src={(user?.image as string) ?? (user?.defaultImage as string)}
                     alt={user?.name}
                     onError={(e) => {
-                      e.currentTarget.src = "";
-                      e.currentTarget.className = "hidden";
+                      e.currentTarget.src = '';
+                      e.currentTarget.className = 'hidden';
                     }}
                     className="w-full h-full object-cover object-center rounded-lg"
                   />
 
                   <AvatarFallback className="w-full h-full object-cover object-center rounded-lg text-3xl">
-                    {" "}
+                    {' '}
                     {(user?.name as string)
                       ? user.name
-                          .split(" ")
+                          .split(' ')
                           .map((n) => n[0])
-                          .join("")
-                      : ""}
+                          .join('')
+                      : ''}
                   </AvatarFallback>
                 </Avatar>
               ) : (
@@ -198,7 +198,7 @@ function RouteComponent() {
         </div>
 
         <div className="text-center md:text-left space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">{user?.name || "Anonymous User"}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{user?.name || 'Anonymous User'}</h1>
           <p className="text-muted-foreground flex items-center justify-center md:justify-start gap-2">
             <Mail className="size-4" /> {user?.email}
           </p>
@@ -211,7 +211,7 @@ function RouteComponent() {
                   ...prev,
                   isOpen: true,
                   currentUserId: user?.id as string,
-                  initialTab: "followers",
+                  initialTab: 'followers',
                 }));
               }}
             >
@@ -227,7 +227,7 @@ function RouteComponent() {
                   ...prev,
                   isOpen: true,
                   currentUserId: user?.id as string,
-                  initialTab: "following",
+                  initialTab: 'following',
                 }));
               }}
             >
@@ -267,9 +267,9 @@ function RouteComponent() {
                     <ShieldCheck className="size-4 shrink-0" /> <span>Status</span>
                   </p>
                   <span
-                    className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${user?.emailVerified ? "bg-primary/10 text-primary border-primary/20" : "bg-muted text-muted-foreground border-border"}`}
+                    className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${user?.emailVerified ? 'bg-primary/10 text-primary border-primary/20' : 'bg-muted text-muted-foreground border-border'}`}
                   >
-                    {user?.emailVerified ? "Verified" : "Pending Verification"}
+                    {user?.emailVerified ? 'Verified' : 'Pending Verification'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -277,7 +277,7 @@ function RouteComponent() {
                     <Calendar className="size-4 shrink-0" /> <span>Joined</span>
                   </p>
                   <span className="text-sm font-medium">
-                    {user?.createdAt ? new Date(user?.createdAt).toLocaleDateString() : "N/A"}
+                    {user?.createdAt ? new Date(user?.createdAt).toLocaleDateString() : 'N/A'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -292,14 +292,14 @@ function RouteComponent() {
                 </h2>
                 <div className="flex items-center justify-between">
                   <p className="text-muted-foreground flex items-center gap-2 text-sm">
-                    <HeartPulse className="size-4 shrink-0" />{" "}
+                    <HeartPulse className="size-4 shrink-0" />{' '}
                     <span className="text-muted-foreground">System Uptime</span>
                   </p>
                   <iframe
-                    src="https://envoy-mindpalace.betteruptime.com/badge?theme=dark"
+                    src="https://envostart.betteruptime.com/badge?theme=dark"
                     width="250"
                     height="30"
-                    style={{ colorScheme: "normal" }}
+                    style={{ colorScheme: 'normal' }}
                   ></iframe>
                 </div>
                 {/*<div className="flex items-center justify-between">
@@ -323,7 +323,7 @@ function RouteComponent() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button className="cursor-pointer flex items-center">
-              {viewPublic ? "View Public Only" : viewAll ? "View All" : "Followers Only"}
+              {viewPublic ? 'View Public Only' : viewAll ? 'View All' : 'Followers Only'}
               {viewPublic ? (
                 <Eye className="size-4" />
               ) : viewAll ? (
@@ -339,7 +339,7 @@ function RouteComponent() {
               <DropdownMenuRadioGroup
                 value={viewMode}
                 onValueChange={(value) => {
-                  toggleViewMode(value as "all" | "public" | "showToFollowers");
+                  toggleViewMode(value as 'all' | 'public' | 'showToFollowers');
                 }}
               >
                 <DropdownMenuRadioItem value="all" className="cursor-pointer">
@@ -357,7 +357,7 @@ function RouteComponent() {
         </DropdownMenu>
         <Link
           to="/user/$userId"
-          className={buttonVariants({ variant: "default" })}
+          className={buttonVariants({ variant: 'default' })}
           params={{
             userId: user?.id as string,
           }}
@@ -366,11 +366,11 @@ function RouteComponent() {
         </Link>
         <EditProfileDialog user={user} />
         <Button
-          variant={"outline"}
+          variant={'outline'}
           onClick={() =>
             imageUploadModalStore.setState((prev) => ({
               ...prev,
-              type: "profile-picture",
+              type: 'profile-picture',
               isUploadThingDialogOpen: true,
             }))
           }
@@ -380,7 +380,7 @@ function RouteComponent() {
           Upload Profile Image
         </Button>
         <Button
-          variant={"outline"}
+          variant={'outline'}
           onClick={handleLogout}
           disabled={isTransition}
           className="px-5 py-2.5 bg-background border border-border font-medium rounded-lg hover:bg-muted transition-colors text-destructive cursor-pointer"
@@ -394,7 +394,7 @@ function RouteComponent() {
         onValueChange={(value) => {
           navigate({
             search: () => ({
-              currentTab: value as "blogs" | "posts" | "images" | "albums",
+              currentTab: value as 'blogs' | 'posts' | 'images' | 'albums',
             }),
           });
         }}
