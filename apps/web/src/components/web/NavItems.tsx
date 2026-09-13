@@ -10,6 +10,7 @@ import {
   Settings2,
   BookMarkedIcon,
   Key,
+  Users,
 } from "lucide-react";
 
 import { NavPrimaryProps, NavProps } from "@/lib/types";
@@ -134,6 +135,14 @@ export const navItemsAdmin: NavPrimaryProps["items"] = linkOptions([
     title: "Admin Panel",
     icon: Key,
     to: "/dashboard/admin",
+    activeOptions: {
+      exact: false,
+    },
+  },
+  {
+    title: "Create User",
+    icon: Users,
+    to: "/dashboard/admin/create-user",
     activeOptions: {
       exact: false,
     },

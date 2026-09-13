@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { createServerFn } from '@tanstack/react-start';
 import groq from 'groq';
 
@@ -49,6 +49,10 @@ const fetchAllPosts = createServerFn({ method: 'GET' }).handler(async ({ context
 });
 
 export const Route = createFileRoute('/_general/blogposts/')({
+  beforeLoad: async ({ context }) => {
+    if (!context.session) throw redirect({ to: '/login' });
+    else if (context.user.role === 'USER') throw redirect({ to: '/envologs' });
+  },
   loader: async () => {
     const posts = await fetchAllPosts();
     return { posts };

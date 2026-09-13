@@ -1,4 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useForm } from "@tanstack/react-form";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { authClient } from "@/lib/auth-client";
+import { loginSchema } from "@/schemas/auth";
 
 export const Route = createFileRoute("/_auth/login/")({
   beforeLoad: async ({ context }) => {
@@ -43,8 +45,55 @@ function RouteComponent() {
   const { user } = Route.useLoaderData();
   const [isPending, setIsPending] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const form = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    validators: {
+      onChange: loginSchema,
+      onSubmit: loginSchema,
+    },
+    onSubmit: async ({ value }) => {
+      setServerError(null);
+      setIsPending(true);
+
+      await authClient.signIn.email(
+        {
+          email: value.email,
+          password: value.password,
+          callbackURL: callbackUrl,
+        },
+        {
+          onRequest: () => {
+            toast.loading("Logging in...", { id: "email-login" });
+          },
+          onSuccess: () => {
+            toast.dismiss("email-login");
+            toast.success("Logged in successfully");
+            setIsRedirecting(true);
+            setIsPending(false);
+          },
+          onError: (ctx) => {
+            toast.dismiss("email-login");
+            const errorMessage = ctx.error.message || "Invalid email or password";
+            setServerError(errorMessage);
+            toast.error("Failed to login", {
+              description: errorMessage,
+            });
+            setIsPending(false);
+          },
+        },
+      );
+    },
+  });
+
   async function handleLogin(provider: "github" | "google" | "discord") {
     setIsPending(true);
+    setServerError(null);
+
     await authClient.signIn.social({
       provider: provider,
       callbackURL: callbackUrl,
@@ -60,7 +109,6 @@ function RouteComponent() {
           setIsRedirecting(true);
           setIsPending(false);
         },
-
         onError: ({ error }: { error: Error }) => {
           toast.dismiss("login-oauth");
           toast.error(`Failed to login with ${provider.toUpperCase()}`, {
@@ -80,15 +128,16 @@ function RouteComponent() {
 
   if (isRedirecting) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-transparent rounded-lg">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-transparent">
         <div className="relative z-10 flex flex-col items-center">
-          <div className="relative h-16 w-16">
-            <div className="absolute inset-0 rounded-full border-4 border-white/20" />
-            <div className="absolute inset-0 rounded-full border-4 border-white border-t-transparent animate-spin" />
+          <div className="relative h-12 w-12">
+            <div className="absolute inset-0 rounded-full border-2 border-zinc-700" />
+            <div className="absolute inset-0 rounded-full border-2 border-zinc-100 border-t-transparent animate-spin" />
           </div>
-
-          <div className="mt-8 space-y-3 flex flex-col items-center">
-            <p className="text-lg font-semibold animate-pulse text-zinc-200">Redirecting...</p>
+          <div className="mt-6 flex flex-col items-center">
+            <p className="text-sm font-medium tracking-wide text-zinc-400 animate-pulse">
+              Redirecting to workspace...
+            </p>
           </div>
         </div>
       </div>
@@ -96,59 +145,154 @@ function RouteComponent() {
   }
 
   return (
-    <Card className="max-w-md w-full bg-zinc-950/80 border border-white/25 shadow-2xl backdrop-blur-xl">
-      <CardHeader>
-        <CardTitle>Login to your account</CardTitle>
-        <CardDescription>Sign in to continue</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <FieldGroup>
-          <Field>
+    <div className="flex min-h-[85vh] w-full items-center justify-center p-4 antialiased">
+      <Card className="w-full max-w-[400px] border-zinc-800 bg-zinc-950/90 text-zinc-50 shadow-2xl backdrop-blur-md">
+        <CardHeader className="space-y-1.5 pb-4">
+          <CardTitle className="text-xl font-semibold tracking-tight text-zinc-100">
+            Welcome back
+          </CardTitle>
+          <CardDescription className="text-xs text-zinc-400">
+            Log in to your account to access your projects
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="space-y-4">
+          {serverError && (
+            <div className="rounded-md border border-red-500/20 bg-red-500/10 p-2.5 text-xs text-red-400">
+              {serverError}
+            </div>
+          )}
+
+          <div className="grid grid-cols-3 gap-2">
             <Button
-              onClick={async () => {
-                await handleLogin("google");
-              }}
+              onClick={() => handleLogin("google")}
               variant="outline"
               type="button"
-              className="cursor-pointer"
               disabled={isPending}
+              className="w-full border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:text-white transition-colors hover:cursor-pointer"
             >
-              <p className="flex items-center  gap-1">
-                <span className="icon-[material-icon-theme--google] size-5" />
-                <span>{isPending ? "Logging in..." : "Continue with Google"}</span>
-              </p>
+              <span className="icon-[material-icon-theme--google] size-4" />
             </Button>
+
             <Button
-              onClick={async () => {
-                await handleLogin("github");
-              }}
+              onClick={() => handleLogin("github")}
               variant="outline"
               type="button"
-              className="cursor-pointer"
               disabled={isPending}
+              className="w-full border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:text-white transition-colors hover:cursor-pointer"
             >
-              <p className="flex items-center gap-1">
-                <span className="icon-[mdi--github] size-6" />
-                <span>{isPending ? "Logging in..." : "Continue with Github"}</span>
-              </p>
+              <span className="icon-[mdi--github] size-4" />
             </Button>
+
             <Button
-              onClick={async () => {
-                await handleLogin("discord");
-              }}
+              onClick={() => handleLogin("discord")}
               variant="outline"
               type="button"
-              className="cursor-pointer"
               disabled={isPending}
+              className="w-full border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800 hover:text-white transition-colors hover:cursor-pointer"
             >
-              <p className="flex items-center gap-1">
-                <span className="icon-[ic--baseline-discord] size-6" />
-                <span>{isPending ? "Logging in..." : "Continue with Discord"}</span>
-              </p>
+              <span className="icon-[ic--baseline-discord] size-4" />
             </Button>
-          </Field>
-        </FieldGroup>
-      </CardContent>
-    </Card>
+          </div>
+
+          <div className="relative flex items-center justify-center py-1">
+            <div className="w-full border-t border-zinc-800" />
+            <span className="absolute bg-zinc-950 px-2 text-[10px] uppercase font-mono tracking-widest text-zinc-500">
+              OR
+            </span>
+          </div>
+
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              form.handleSubmit();
+            }}
+            className="space-y-3.5"
+          >
+            <FieldGroup className="space-y-3">
+              <form.Field
+                name="email"
+                children={(field) => (
+                  <Field className="space-y-1.5">
+                    <label htmlFor={field.name} className="block text-xs font-medium text-zinc-300">
+                      Email address
+                    </label>
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      type="email"
+                      placeholder="name@example.com"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={isPending}
+                      className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 px-3 py-1.5 text-sm text-zinc-100 shadow-sm placeholder:text-zinc-600 focus:border-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 transition-colors disabled:opacity-50"
+                    />
+                    {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                      <p className="text-[11px] text-red-400">
+                        {field.state.meta.errors.join(", ")}
+                      </p>
+                    )}
+                  </Field>
+                )}
+              />
+
+              <form.Field
+                name="password"
+                children={(field) => (
+                  <Field className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label
+                        htmlFor={field.name}
+                        className="block text-xs font-medium text-zinc-300"
+                      >
+                        Password
+                      </label>
+                    </div>
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      type="password"
+                      placeholder="••••••••"
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      disabled={isPending}
+                      className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 px-3 py-1.5 text-sm text-zinc-100 shadow-sm placeholder:text-zinc-600 focus:border-zinc-400 focus:outline-none focus:ring-1 focus:ring-zinc-400 transition-colors disabled:opacity-50"
+                    />
+                    {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
+                      <p className="text-[11px] text-red-400">
+                        {field.state.meta.errors.join(", ")}
+                      </p>
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              children={([canSubmit, isSubmitting]) => (
+                <Button
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || isPending}
+                  className="w-full rounded-md bg-zinc-100 text-zinc-900 hover:bg-zinc-200 font-medium text-xs h-9 shadow transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  {isSubmitting || isPending ? (
+                    <span className="flex items-center gap-2">
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-zinc-900 border-t-transparent" />
+                      Signing in...
+                    </span>
+                  ) : (
+                    "Continue with Email"
+                  )}
+                </Button>
+              )}
+            />
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

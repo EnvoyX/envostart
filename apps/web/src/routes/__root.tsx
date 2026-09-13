@@ -230,12 +230,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                 {
                   name: "TanStack Query",
                   render: <ReactQueryDevtoolsPanel />,
-                  defaultOpen: true,
+                  defaultOpen: false,
                 },
                 {
                   name: "Tanstack Router",
                   render: <TanStackRouterDevtoolsPanel />,
-                  defaultOpen: true,
+                  defaultOpen: false,
                 },
                 formDevtoolsPlugin(),
                 pacerDevtoolsPlugin(),

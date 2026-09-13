@@ -1,10 +1,11 @@
-import { createServerFn } from '@tanstack/react-start';
-import z from 'zod';
+import { createServerFn } from "@tanstack/react-start";
+import z from "zod";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+import { authMiddleware } from "@/middlewares/auth";
+import { createUserSchema } from "@/types/user";
 
-import { db } from '@/lib/db';
-import { authMiddleware } from '@/middlewares/auth';
-
-export const getPublicProfileFn = createServerFn({ method: 'GET' })
+export const getPublicProfileFn = createServerFn({ method: "GET" })
   .validator(
     z.object({
       userId: z.string(),
@@ -26,7 +27,7 @@ export const getPublicProfileFn = createServerFn({ method: 'GET' })
             },
             _count: { select: { likes: true, comments: true } },
           },
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         shortPosts: {
           include: {
@@ -48,10 +49,10 @@ export const getPublicProfileFn = createServerFn({ method: 'GET' })
               },
             },
           },
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         images: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         albums: {
           include: {
@@ -59,7 +60,7 @@ export const getPublicProfileFn = createServerFn({ method: 'GET' })
             images: true,
             _count: { select: { images: true } },
           },
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
         },
         followers: {
           include: {
@@ -76,7 +77,7 @@ export const getPublicProfileFn = createServerFn({ method: 'GET' })
     return profile;
   });
 
-export const updateProfile = createServerFn({ method: 'POST' })
+export const updateProfile = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator(
     z.object({
@@ -109,4 +110,16 @@ export const updateProfile = createServerFn({ method: 'POST' })
       },
     });
     return updatedUser;
+  });
+
+export const createUserServerFn = createServerFn({ method: "POST" })
+  .validator(createUserSchema)
+  .handler(async ({ data }) => {
+    await auth.api.createUser({
+      body: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+    });
   });

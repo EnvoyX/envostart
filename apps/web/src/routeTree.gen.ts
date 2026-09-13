@@ -18,6 +18,7 @@ import { Route as ApiChatRouteRouteImport } from './routes/api/chat/route'
 import { Route as ApiProxyImageRouteImport } from './routes/api/proxy-image'
 import { Route as ApiUploadthingRouteImport } from './routes/api/uploadthing'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardAdminRouteRouteImport } from './routes/dashboard/admin/route'
 import { Route as DashboardAlbumsRouteRouteImport } from './routes/dashboard/albums/route'
 import { Route as DashboardImagesRouteRouteImport } from './routes/dashboard/images/route'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
@@ -50,6 +51,7 @@ import { Route as DashboardTaskTrackerTaskListIdRouteImport } from './routes/das
 import { Route as EnvologsSlugIndexRouteImport } from './routes/envologs/$slug.index'
 import { Route as PostPostIdIndexRouteImport } from './routes/post/$postId.index'
 import { Route as GeneralArticlesSlugIndexRouteImport } from './routes/_general/articles.$slug.index'
+import { Route as DashboardAdminCreateUserIndexRouteImport } from './routes/dashboard/admin/create-user/index'
 import { Route as DashboardAlbumsAlbumIdIndexRouteImport } from './routes/dashboard/albums/$albumId.index'
 import { Route as DashboardBlogSlugIndexRouteImport } from './routes/dashboard/blog/$slug.index'
 import { Route as DashboardBlogCreateBlogIndexRouteImport } from './routes/dashboard/blog/create-blog/index'
@@ -100,6 +102,11 @@ const ApiUploadthingRoute = ApiUploadthingRouteImport.update({
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardAdminRouteRoute = DashboardAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardAlbumsRouteRoute = DashboardAlbumsRouteRouteImport.update({
@@ -199,9 +206,9 @@ const BlogpostsSlugIndexRoute = BlogpostsSlugIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardAdminIndexRoute = DashboardAdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
-  getParentRoute: () => DashboardRouteRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardAdminRouteRoute,
 } as any)
 const DashboardAlbumsIndexRoute = DashboardAlbumsIndexRouteImport.update({
   id: '/',
@@ -268,6 +275,12 @@ const GeneralArticlesSlugIndexRoute =
     path: '/articles/$slug/',
     getParentRoute: () => GeneralRouteRoute,
   } as any)
+const DashboardAdminCreateUserIndexRoute =
+  DashboardAdminCreateUserIndexRouteImport.update({
+    id: '/create-user/',
+    path: '/create-user/',
+    getParentRoute: () => DashboardAdminRouteRoute,
+  } as any)
 const DashboardAlbumsAlbumIdIndexRoute =
   DashboardAlbumsAlbumIdIndexRouteImport.update({
     id: '/$albumId/',
@@ -321,6 +334,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/api/chat': typeof ApiChatRouteRoute
+  '/dashboard/admin': typeof DashboardAdminRouteRouteWithChildren
   '/dashboard/albums': typeof DashboardAlbumsRouteRouteWithChildren
   '/dashboard/images': typeof DashboardImagesRouteRouteWithChildren
   '/api/proxy-image': typeof ApiProxyImageRoute
@@ -356,6 +370,7 @@ export interface FileRoutesByFullPath {
   '/envologs/$slug/': typeof EnvologsSlugIndexRoute
   '/post/$postId/': typeof PostPostIdIndexRoute
   '/articles/$slug/': typeof GeneralArticlesSlugIndexRoute
+  '/dashboard/admin/create-user/': typeof DashboardAdminCreateUserIndexRoute
   '/dashboard/albums/$albumId/': typeof DashboardAlbumsAlbumIdIndexRoute
   '/dashboard/blog/$slug/': typeof DashboardBlogSlugIndexRoute
   '/dashboard/blog/create-blog/': typeof DashboardBlogCreateBlogIndexRoute
@@ -401,6 +416,7 @@ export interface FileRoutesByTo {
   '/envologs/$slug': typeof EnvologsSlugIndexRoute
   '/post/$postId': typeof PostPostIdIndexRoute
   '/articles/$slug': typeof GeneralArticlesSlugIndexRoute
+  '/dashboard/admin/create-user': typeof DashboardAdminCreateUserIndexRoute
   '/dashboard/albums/$albumId': typeof DashboardAlbumsAlbumIdIndexRoute
   '/dashboard/blog/$slug': typeof DashboardBlogSlugIndexRoute
   '/dashboard/blog/create-blog': typeof DashboardBlogCreateBlogIndexRoute
@@ -418,6 +434,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/api/chat': typeof ApiChatRouteRoute
+  '/dashboard/admin': typeof DashboardAdminRouteRouteWithChildren
   '/dashboard/albums': typeof DashboardAlbumsRouteRouteWithChildren
   '/dashboard/images': typeof DashboardImagesRouteRouteWithChildren
   '/api/proxy-image': typeof ApiProxyImageRoute
@@ -453,6 +470,7 @@ export interface FileRoutesById {
   '/envologs/$slug/': typeof EnvologsSlugIndexRoute
   '/post/$postId/': typeof PostPostIdIndexRoute
   '/_general/articles/$slug/': typeof GeneralArticlesSlugIndexRoute
+  '/dashboard/admin/create-user/': typeof DashboardAdminCreateUserIndexRoute
   '/dashboard/albums/$albumId/': typeof DashboardAlbumsAlbumIdIndexRoute
   '/dashboard/blog/$slug/': typeof DashboardBlogSlugIndexRoute
   '/dashboard/blog/create-blog/': typeof DashboardBlogCreateBlogIndexRoute
@@ -469,6 +487,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/$'
     | '/api/chat'
+    | '/dashboard/admin'
     | '/dashboard/albums'
     | '/dashboard/images'
     | '/api/proxy-image'
@@ -504,6 +523,7 @@ export interface FileRouteTypes {
     | '/envologs/$slug/'
     | '/post/$postId/'
     | '/articles/$slug/'
+    | '/dashboard/admin/create-user/'
     | '/dashboard/albums/$albumId/'
     | '/dashboard/blog/$slug/'
     | '/dashboard/blog/create-blog/'
@@ -549,6 +569,7 @@ export interface FileRouteTypes {
     | '/envologs/$slug'
     | '/post/$postId'
     | '/articles/$slug'
+    | '/dashboard/admin/create-user'
     | '/dashboard/albums/$albumId'
     | '/dashboard/blog/$slug'
     | '/dashboard/blog/create-blog'
@@ -565,6 +586,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/$'
     | '/api/chat'
+    | '/dashboard/admin'
     | '/dashboard/albums'
     | '/dashboard/images'
     | '/api/proxy-image'
@@ -600,6 +622,7 @@ export interface FileRouteTypes {
     | '/envologs/$slug/'
     | '/post/$postId/'
     | '/_general/articles/$slug/'
+    | '/dashboard/admin/create-user/'
     | '/dashboard/albums/$albumId/'
     | '/dashboard/blog/$slug/'
     | '/dashboard/blog/create-blog/'
@@ -694,6 +717,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/admin': {
+      id: '/dashboard/admin'
+      path: '/admin'
+      fullPath: '/dashboard/admin'
+      preLoaderRoute: typeof DashboardAdminRouteRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/albums': {
@@ -831,10 +861,10 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/admin/': {
       id: '/dashboard/admin/'
-      path: '/admin'
+      path: '/'
       fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof DashboardAdminIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
+      parentRoute: typeof DashboardAdminRouteRoute
     }
     '/dashboard/albums/': {
       id: '/dashboard/albums/'
@@ -919,6 +949,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/articles/$slug/'
       preLoaderRoute: typeof GeneralArticlesSlugIndexRouteImport
       parentRoute: typeof GeneralRouteRoute
+    }
+    '/dashboard/admin/create-user/': {
+      id: '/dashboard/admin/create-user/'
+      path: '/create-user'
+      fullPath: '/dashboard/admin/create-user/'
+      preLoaderRoute: typeof DashboardAdminCreateUserIndexRouteImport
+      parentRoute: typeof DashboardAdminRouteRoute
     }
     '/dashboard/albums/$albumId/': {
       id: '/dashboard/albums/$albumId/'
@@ -1017,6 +1054,19 @@ const GeneralRouteRouteWithChildren = GeneralRouteRoute._addFileChildren(
   GeneralRouteRouteChildren,
 )
 
+interface DashboardAdminRouteRouteChildren {
+  DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
+  DashboardAdminCreateUserIndexRoute: typeof DashboardAdminCreateUserIndexRoute
+}
+
+const DashboardAdminRouteRouteChildren: DashboardAdminRouteRouteChildren = {
+  DashboardAdminIndexRoute: DashboardAdminIndexRoute,
+  DashboardAdminCreateUserIndexRoute: DashboardAdminCreateUserIndexRoute,
+}
+
+const DashboardAdminRouteRouteWithChildren =
+  DashboardAdminRouteRoute._addFileChildren(DashboardAdminRouteRouteChildren)
+
 interface DashboardAlbumsRouteRouteChildren {
   DashboardAlbumsIndexRoute: typeof DashboardAlbumsIndexRoute
   DashboardAlbumsAlbumIdIndexRoute: typeof DashboardAlbumsAlbumIdIndexRoute
@@ -1042,12 +1092,12 @@ const DashboardImagesRouteRouteWithChildren =
   DashboardImagesRouteRoute._addFileChildren(DashboardImagesRouteRouteChildren)
 
 interface DashboardRouteRouteChildren {
+  DashboardAdminRouteRoute: typeof DashboardAdminRouteRouteWithChildren
   DashboardAlbumsRouteRoute: typeof DashboardAlbumsRouteRouteWithChildren
   DashboardImagesRouteRoute: typeof DashboardImagesRouteRouteWithChildren
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardTaskTrackerTaskListIdRoute: typeof DashboardTaskTrackerTaskListIdRoute
-  DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
   DashboardBlogIndexRoute: typeof DashboardBlogIndexRoute
   DashboardImageUploadIndexRoute: typeof DashboardImageUploadIndexRoute
   DashboardPostIndexRoute: typeof DashboardPostIndexRoute
@@ -1062,12 +1112,12 @@ interface DashboardRouteRouteChildren {
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardAdminRouteRoute: DashboardAdminRouteRouteWithChildren,
   DashboardAlbumsRouteRoute: DashboardAlbumsRouteRouteWithChildren,
   DashboardImagesRouteRoute: DashboardImagesRouteRouteWithChildren,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardTaskTrackerTaskListIdRoute: DashboardTaskTrackerTaskListIdRoute,
-  DashboardAdminIndexRoute: DashboardAdminIndexRoute,
   DashboardBlogIndexRoute: DashboardBlogIndexRoute,
   DashboardImageUploadIndexRoute: DashboardImageUploadIndexRoute,
   DashboardPostIndexRoute: DashboardPostIndexRoute,

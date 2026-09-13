@@ -1,11 +1,11 @@
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { betterAuth, type BetterAuthOptions } from "better-auth/minimal";
-import { customSession } from "better-auth/plugins";
+import { customSession, admin as adminPlugin } from "better-auth/plugins";
 import { tanstackStartCookies } from "better-auth/tanstack-start";
-
 import { env } from "@/env";
 
 import { db } from "./db";
+import { ac, user, USER, admin, ADMIN, SUPERADMIN } from "./permission";
 
 const options = {
   appName: "Envostart",
@@ -49,6 +49,15 @@ const options = {
     window: 60, // time window in seconds
     max: 100, // max requests in the window
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string", // Better Auth processes it as a string internally
+        required: false,
+        defaultValue: "USER",
+      },
+    },
+  },
   plugins: [
     //...plugins
   ],
@@ -58,6 +67,18 @@ export const auth = betterAuth({
   ...options,
   plugins: [
     ...(options.plugins ?? []),
+    adminPlugin({
+      adminRoles: ["admin", "ADMIN", "SUPERADMIN"],
+      defaultRole: "USER",
+      ac,
+      roles: {
+        user,
+        USER,
+        admin,
+        ADMIN,
+        SUPERADMIN,
+      },
+    }),
     customSession(async ({ user, session }) => {
       const userData = await db.user.findUnique({
         where: { id: user.id },

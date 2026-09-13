@@ -295,6 +295,9 @@ model User {
   imageKey        String?
   defaultImage    String?
   biodata         String?
+  banned Boolean?
+	banReason String?
+	banExpires DateTime? @db.Timestamptz(3)
   showFollowStats Boolean     @default(true)
   role            UserRole    @default(USER)
   createdAt       DateTime
@@ -326,6 +329,7 @@ model Session {
   updatedAt DateTime
   ipAddress String?
   userAgent String?
+  impersonatedBy String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -350,7 +354,7 @@ model Account {
   createdAt             DateTime
   updatedAt             DateTime
 
-  issuer String
+  issuer                String?
 
   @@map("account")
   @@unique([issuer, accountId], map: "account_issuer_accountId_uidx")

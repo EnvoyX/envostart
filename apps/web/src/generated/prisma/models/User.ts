@@ -34,6 +34,9 @@ export type UserMinAggregateOutputType = {
   imageKey: string | null
   defaultImage: string | null
   biodata: string | null
+  banned: boolean | null
+  banReason: string | null
+  banExpires: Date | null
   showFollowStats: boolean | null
   role: $Enums.UserRole | null
   createdAt: Date | null
@@ -50,6 +53,9 @@ export type UserMaxAggregateOutputType = {
   imageKey: string | null
   defaultImage: string | null
   biodata: string | null
+  banned: boolean | null
+  banReason: string | null
+  banExpires: Date | null
   showFollowStats: boolean | null
   role: $Enums.UserRole | null
   createdAt: Date | null
@@ -66,6 +72,9 @@ export type UserCountAggregateOutputType = {
   imageKey: number
   defaultImage: number
   biodata: number
+  banned: number
+  banReason: number
+  banExpires: number
   showFollowStats: number
   role: number
   createdAt: number
@@ -84,6 +93,9 @@ export type UserMinAggregateInputType = {
   imageKey?: true
   defaultImage?: true
   biodata?: true
+  banned?: true
+  banReason?: true
+  banExpires?: true
   showFollowStats?: true
   role?: true
   createdAt?: true
@@ -100,6 +112,9 @@ export type UserMaxAggregateInputType = {
   imageKey?: true
   defaultImage?: true
   biodata?: true
+  banned?: true
+  banReason?: true
+  banExpires?: true
   showFollowStats?: true
   role?: true
   createdAt?: true
@@ -116,6 +131,9 @@ export type UserCountAggregateInputType = {
   imageKey?: true
   defaultImage?: true
   biodata?: true
+  banned?: true
+  banReason?: true
+  banExpires?: true
   showFollowStats?: true
   role?: true
   createdAt?: true
@@ -205,6 +223,9 @@ export type UserGroupByOutputType = {
   imageKey: string | null
   defaultImage: string | null
   biodata: string | null
+  banned: boolean | null
+  banReason: string | null
+  banExpires: Date | null
   showFollowStats: boolean
   role: $Enums.UserRole
   createdAt: Date
@@ -242,6 +263,9 @@ export type UserWhereInput = {
   imageKey?: Prisma.StringNullableFilter<"User"> | string | null
   defaultImage?: Prisma.StringNullableFilter<"User"> | string | null
   biodata?: Prisma.StringNullableFilter<"User"> | string | null
+  banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  banReason?: Prisma.StringNullableFilter<"User"> | string | null
+  banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   showFollowStats?: Prisma.BoolFilter<"User"> | boolean
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -272,6 +296,9 @@ export type UserOrderByWithRelationInput = {
   imageKey?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultImage?: Prisma.SortOrderInput | Prisma.SortOrder
   biodata?: Prisma.SortOrderInput | Prisma.SortOrder
+  banned?: Prisma.SortOrderInput | Prisma.SortOrder
+  banReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   showFollowStats?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -305,6 +332,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   imageKey?: Prisma.StringNullableFilter<"User"> | string | null
   defaultImage?: Prisma.StringNullableFilter<"User"> | string | null
   biodata?: Prisma.StringNullableFilter<"User"> | string | null
+  banned?: Prisma.BoolNullableFilter<"User"> | boolean | null
+  banReason?: Prisma.StringNullableFilter<"User"> | string | null
+  banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   showFollowStats?: Prisma.BoolFilter<"User"> | boolean
   role?: Prisma.EnumUserRoleFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -335,6 +365,9 @@ export type UserOrderByWithAggregationInput = {
   imageKey?: Prisma.SortOrderInput | Prisma.SortOrder
   defaultImage?: Prisma.SortOrderInput | Prisma.SortOrder
   biodata?: Prisma.SortOrderInput | Prisma.SortOrder
+  banned?: Prisma.SortOrderInput | Prisma.SortOrder
+  banReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   showFollowStats?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -357,6 +390,9 @@ export type UserScalarWhereWithAggregatesInput = {
   imageKey?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   defaultImage?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   biodata?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  banned?: Prisma.BoolNullableWithAggregatesFilter<"User"> | boolean | null
+  banReason?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  banExpires?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
   showFollowStats?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   role?: Prisma.EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -373,6 +409,9 @@ export type UserCreateInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -403,6 +442,9 @@ export type UserUncheckedCreateInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -433,6 +475,9 @@ export type UserUpdateInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -463,6 +508,9 @@ export type UserUncheckedUpdateInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,6 +541,9 @@ export type UserCreateManyInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -509,6 +560,9 @@ export type UserUpdateManyMutationInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -525,6 +579,9 @@ export type UserUncheckedUpdateManyInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -551,6 +608,9 @@ export type UserCountOrderByAggregateInput = {
   imageKey?: Prisma.SortOrder
   defaultImage?: Prisma.SortOrder
   biodata?: Prisma.SortOrder
+  banned?: Prisma.SortOrder
+  banReason?: Prisma.SortOrder
+  banExpires?: Prisma.SortOrder
   showFollowStats?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -567,6 +627,9 @@ export type UserMaxOrderByAggregateInput = {
   imageKey?: Prisma.SortOrder
   defaultImage?: Prisma.SortOrder
   biodata?: Prisma.SortOrder
+  banned?: Prisma.SortOrder
+  banReason?: Prisma.SortOrder
+  banExpires?: Prisma.SortOrder
   showFollowStats?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -583,6 +646,9 @@ export type UserMinOrderByAggregateInput = {
   imageKey?: Prisma.SortOrder
   defaultImage?: Prisma.SortOrder
   biodata?: Prisma.SortOrder
+  banned?: Prisma.SortOrder
+  banReason?: Prisma.SortOrder
+  banExpires?: Prisma.SortOrder
   showFollowStats?: Prisma.SortOrder
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -761,6 +827,10 @@ export type UserUpdateOneRequiredWithoutCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCommentsInput, Prisma.UserUpdateWithoutCommentsInput>, Prisma.UserUncheckedUpdateWithoutCommentsInput>
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type EnumUserRoleFieldUpdateOperationsInput = {
   set?: $Enums.UserRole
 }
@@ -803,6 +873,9 @@ export type UserCreateWithoutQuranTrackInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -832,6 +905,9 @@ export type UserUncheckedCreateWithoutQuranTrackInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -877,6 +953,9 @@ export type UserUpdateWithoutQuranTrackInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -906,6 +985,9 @@ export type UserUncheckedUpdateWithoutQuranTrackInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -935,6 +1017,9 @@ export type UserCreateWithoutShortPostsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -964,6 +1049,9 @@ export type UserUncheckedCreateWithoutShortPostsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1009,6 +1097,9 @@ export type UserUpdateWithoutShortPostsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1038,6 +1129,9 @@ export type UserUncheckedUpdateWithoutShortPostsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1067,6 +1161,9 @@ export type UserCreateWithoutImagesInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1096,6 +1193,9 @@ export type UserUncheckedCreateWithoutImagesInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1141,6 +1241,9 @@ export type UserUpdateWithoutImagesInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1170,6 +1273,9 @@ export type UserUncheckedUpdateWithoutImagesInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1199,6 +1305,9 @@ export type UserCreateWithoutAlbumsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1228,6 +1337,9 @@ export type UserUncheckedCreateWithoutAlbumsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1273,6 +1385,9 @@ export type UserUpdateWithoutAlbumsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1302,6 +1417,9 @@ export type UserUncheckedUpdateWithoutAlbumsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1331,6 +1449,9 @@ export type UserCreateWithoutPostsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1360,6 +1481,9 @@ export type UserUncheckedCreateWithoutPostsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1405,6 +1529,9 @@ export type UserUpdateWithoutPostsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1434,6 +1561,9 @@ export type UserUncheckedUpdateWithoutPostsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1463,6 +1593,9 @@ export type UserCreateWithoutTaskListsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1492,6 +1625,9 @@ export type UserUncheckedCreateWithoutTaskListsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1537,6 +1673,9 @@ export type UserUpdateWithoutTaskListsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1566,6 +1705,9 @@ export type UserUncheckedUpdateWithoutTaskListsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1595,6 +1737,9 @@ export type UserCreateWithoutTasksInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1624,6 +1769,9 @@ export type UserUncheckedCreateWithoutTasksInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1669,6 +1817,9 @@ export type UserUpdateWithoutTasksInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1698,6 +1849,9 @@ export type UserUncheckedUpdateWithoutTasksInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1727,6 +1881,9 @@ export type UserCreateWithoutChatsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1756,6 +1913,9 @@ export type UserUncheckedCreateWithoutChatsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1801,6 +1961,9 @@ export type UserUpdateWithoutChatsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1830,6 +1993,9 @@ export type UserUncheckedUpdateWithoutChatsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1859,6 +2025,9 @@ export type UserCreateWithoutFollowingInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1888,6 +2057,9 @@ export type UserUncheckedCreateWithoutFollowingInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1922,6 +2094,9 @@ export type UserCreateWithoutFollowersInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1951,6 +2126,9 @@ export type UserUncheckedCreateWithoutFollowersInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -1996,6 +2174,9 @@ export type UserUpdateWithoutFollowingInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2025,6 +2206,9 @@ export type UserUncheckedUpdateWithoutFollowingInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2065,6 +2249,9 @@ export type UserUpdateWithoutFollowersInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2094,6 +2281,9 @@ export type UserUncheckedUpdateWithoutFollowersInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2123,6 +2313,9 @@ export type UserCreateWithoutLikesInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2152,6 +2345,9 @@ export type UserUncheckedCreateWithoutLikesInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2197,6 +2393,9 @@ export type UserUpdateWithoutLikesInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2226,6 +2425,9 @@ export type UserUncheckedUpdateWithoutLikesInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2255,6 +2457,9 @@ export type UserCreateWithoutCommentsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2284,6 +2489,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2329,6 +2537,9 @@ export type UserUpdateWithoutCommentsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2358,6 +2569,9 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2387,6 +2601,9 @@ export type UserCreateWithoutSessionsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2416,6 +2633,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2461,6 +2681,9 @@ export type UserUpdateWithoutSessionsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2490,6 +2713,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2519,6 +2745,9 @@ export type UserCreateWithoutAccountsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2548,6 +2777,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   imageKey?: string | null
   defaultImage?: string | null
   biodata?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
   showFollowStats?: boolean
   role?: $Enums.UserRole
   createdAt: Date | string
@@ -2593,6 +2825,9 @@ export type UserUpdateWithoutAccountsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2622,6 +2857,9 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   imageKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   defaultImage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   biodata?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   showFollowStats?: Prisma.BoolFieldUpdateOperationsInput | boolean
   role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2790,6 +3028,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   imageKey?: boolean
   defaultImage?: boolean
   biodata?: boolean
+  banned?: boolean
+  banReason?: boolean
+  banExpires?: boolean
   showFollowStats?: boolean
   role?: boolean
   createdAt?: boolean
@@ -2821,6 +3062,9 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   imageKey?: boolean
   defaultImage?: boolean
   biodata?: boolean
+  banned?: boolean
+  banReason?: boolean
+  banExpires?: boolean
   showFollowStats?: boolean
   role?: boolean
   createdAt?: boolean
@@ -2837,6 +3081,9 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   imageKey?: boolean
   defaultImage?: boolean
   biodata?: boolean
+  banned?: boolean
+  banReason?: boolean
+  banExpires?: boolean
   showFollowStats?: boolean
   role?: boolean
   createdAt?: boolean
@@ -2853,13 +3100,16 @@ export type UserSelectScalar = {
   imageKey?: boolean
   defaultImage?: boolean
   biodata?: boolean
+  banned?: boolean
+  banReason?: boolean
+  banExpires?: boolean
   showFollowStats?: boolean
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "emailVerified" | "image" | "imageKey" | "defaultImage" | "biodata" | "showFollowStats" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "password" | "emailVerified" | "image" | "imageKey" | "defaultImage" | "biodata" | "banned" | "banReason" | "banExpires" | "showFollowStats" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
@@ -2908,6 +3158,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     imageKey: string | null
     defaultImage: string | null
     biodata: string | null
+    banned: boolean | null
+    banReason: string | null
+    banExpires: Date | null
     showFollowStats: boolean
     role: $Enums.UserRole
     createdAt: Date
@@ -3358,6 +3611,9 @@ export interface UserFieldRefs {
   readonly imageKey: Prisma.FieldRef<"User", 'String'>
   readonly defaultImage: Prisma.FieldRef<"User", 'String'>
   readonly biodata: Prisma.FieldRef<"User", 'String'>
+  readonly banned: Prisma.FieldRef<"User", 'Boolean'>
+  readonly banReason: Prisma.FieldRef<"User", 'String'>
+  readonly banExpires: Prisma.FieldRef<"User", 'DateTime'>
   readonly showFollowStats: Prisma.FieldRef<"User", 'Boolean'>
   readonly role: Prisma.FieldRef<"User", 'UserRole'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
