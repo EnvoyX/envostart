@@ -8,9 +8,10 @@
     "BETTER_AUTH_URL",
     "VITE_BASE_URL",
     "SANITY_API_READ_TOKEN",
-    "SANITY_PROJECT_ID",
-    "SANITY_DATASET",
-    "SANITY_STUDIO_URL"
+    "SANITY_SESSION_SECRET",
+    "VITE_SANITY_PROJECT_ID",
+    "VITE_SANITY_DATASET",
+    "VITE_SANITY_STUDIO_URL"
   ],
   "globalDependencies": ["**/.env.*local", ".env", ".env.local"],
   "tasks": {
@@ -31,7 +32,12 @@
         "UPLOADTHING_APP_ID",
         "DISCORD_CLIENT_ID",
         "DISCORD_CLIENT_SECRET",
-        "VITE_STORYBLOK_DELIVERY_API_TOKEN"
+        "SANITY_API_READ_TOKEN",
+        "SANITY_SESSION_SECRET",
+        "VITE_STORYBLOK_DELIVERY_API_TOKEN",
+        "VITE_SANITY_PROJECT_ID",
+        "VITE_SANITY_DATASET",
+        "VITE_SANITY_STUDIO_URL"
       ],
       "inputs": ["$TURBO_DEFAULT$", ".env*"]
     },
