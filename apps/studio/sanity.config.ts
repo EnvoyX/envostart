@@ -15,7 +15,7 @@ export default defineConfig({
     structureTool(),
     presentationTool({
       previewUrl: {
-        initial: process.env.SANITY_STUDIO_PREVIEW_URL || "https://envoy-mindpalace.vercel.app/",
+        initial: process.env.SANITY_STUDIO_PREVIEW_URL || "https://envostart.vercel.app/",
         previewMode: {
           enable: "/api/draft-mode/enable",
         },

@@ -93,7 +93,7 @@ export function WorksSection() {
       description: "My personal website built with various TanStack Libraries.",
       tags: ["React", "Tailwind", "TanStack Start", "TypeScript"],
       imageUrl: "https://i.ibb.co.com/nNm7tG1T/Screenshot-2026-05-15-095522.png",
-      projectUrl: "https://envoy-mindpalace.vercel.app/",
+      projectUrl: "https://envostart.vercel.app/",
     },
   ];
 

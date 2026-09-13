@@ -1,16 +1,16 @@
-import { createClient } from '@sanity/client';
-import { createImageUrlBuilder } from '@sanity/image-url';
+import { createClient } from "@sanity/client";
+import { createImageUrlBuilder } from "@sanity/image-url";
 
-import { env } from '@/env';
+import { env } from "@/env";
 
 export const sanityClient = createClient({
-  projectId: env.SANITY_PROJECT_ID,
-  dataset: env.SANITY_DATASET,
+  projectId: env.VITE_SANITY_PROJECT_ID,
+  dataset: env.VITE_SANITY_DATASET,
   useCdn: true,
-  apiVersion: '2026-07-01',
+  apiVersion: "2026-07-01",
   stega: {
     enabled: true,
-    studioUrl: env.SANITY_STUDIO_URL,
+    studioUrl: env.VITE_SANITY_STUDIO_URL,
   },
 });
 

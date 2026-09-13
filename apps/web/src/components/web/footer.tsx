@@ -101,7 +101,7 @@ export function Footer() {
               </div>
             </div>
             <iframe
-              src="https://envoy-mindpalace.betteruptime.com/badge?theme=dark"
+              src="https://envostart.betteruptime.com/badge?theme=dark"
               width="250"
               height="30"
               style={{ colorScheme: "normal" }}
