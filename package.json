@@ -23,7 +23,7 @@
     "release": "turbo build --filter=@envoy-mindpalace/web && changeset publish"
   },
   "devDependencies": {
-    "turbo": "^2.10.11"
+    "turbo": "^2.11.8"
   },
   "engines": {
     "node": ">=18.0.0"

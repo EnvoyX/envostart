@@ -108,3 +108,10 @@ minimumReleaseAgeExclude:
   - '@tanstack/react-virtual@3.14.19'
   - '@tanstack/virtual-core@3.19.4'
   - lucide-react@1.57.0
+  - '@turbo/darwin-64@2.11.8'
+  - '@turbo/darwin-arm64@2.11.8'
+  - '@turbo/linux-64@2.11.8'
+  - '@turbo/linux-arm64@2.11.8'
+  - '@turbo/windows-64@2.11.8'
+  - '@turbo/windows-arm64@2.11.8'
+  - turbo@2.11.8
