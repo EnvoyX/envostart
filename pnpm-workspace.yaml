@@ -16,71 +16,71 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - shadcn@4.9.0
-  - "@tanstack/ai-client@0.16.2 || 0.18.2"
-  - "@tanstack/ai-event-client@0.5.3 || 0.6.5"
-  - "@tanstack/ai-gemini@0.15.0 || 0.17.2"
-  - "@tanstack/ai-groq@0.4.0 || 0.4.10"
-  - "@tanstack/ai-ollama@0.8.0 || 0.8.7"
-  - "@tanstack/ai-openrouter@0.13.0 || 0.14.2"
-  - "@tanstack/ai-react@0.15.3 || 0.15.11"
-  - "@tanstack/ai@0.27.0 || 0.34.0"
-  - "@tanstack/openai-base@0.7.0 || 0.9.0"
-  - "@tanstack/ai-devtools-core@0.4.7 || 0.4.14"
-  - "@tanstack/react-ai-devtools@0.2.50 || 0.2.57"
+  - '@tanstack/ai-client@0.16.2 || 0.18.2 || 0.39.3'
+  - '@tanstack/ai-event-client@0.5.3 || 0.6.5'
+  - '@tanstack/ai-gemini@0.15.0 || 0.17.2 || 0.38.0'
+  - '@tanstack/ai-groq@0.4.0 || 0.4.10 || 0.9.0'
+  - '@tanstack/ai-ollama@0.8.0 || 0.8.7 || 0.12.0'
+  - '@tanstack/ai-openrouter@0.13.0 || 0.14.2 || 0.22.0'
+  - '@tanstack/ai-react@0.15.3 || 0.15.11 || 0.30.4'
+  - '@tanstack/ai@0.27.0 || 0.34.0 || 0.69.0'
+  - '@tanstack/openai-base@0.7.0 || 0.9.0 || 0.14.0'
+  - '@tanstack/ai-devtools-core@0.4.7 || 0.4.14'
+  - '@tanstack/react-ai-devtools@0.2.50 || 0.2.57'
   - cnfast@0.0.8 || 0.1.0
-  - "@tanstack/ai-utils@0.3.0"
+  - '@tanstack/ai-utils@0.3.0 || 0.4.2'
   - vite@8.1.0
-  - '@tanstack/db@0.6.10 || 0.8.5'
+  - '@tanstack/db@0.6.10 || 0.8.5 || 0.14.0'
   - '@tanstack/query-core@5.101.1 || 5.102.4'
-  - '@tanstack/query-db-collection@1.0.42 || 1.2.10'
+  - '@tanstack/query-db-collection@1.0.42 || 1.2.10 || 1.4.4'
   - '@tanstack/query-devtools@5.101.1 || 5.102.4'
   - '@tanstack/react-query-devtools@5.101.1 || 5.102.4'
   - '@tanstack/react-query@5.101.1 || 5.102.4'
-  - '@tanstack/react-db@0.1.88 || 0.3.5'
-  - "@oxfmt/binding-android-arm-eabi@0.61.0"
-  - "@oxfmt/binding-android-arm64@0.61.0"
-  - "@oxfmt/binding-darwin-arm64@0.61.0"
-  - "@oxfmt/binding-darwin-x64@0.61.0"
-  - "@oxfmt/binding-freebsd-x64@0.61.0"
-  - "@oxfmt/binding-linux-arm-gnueabihf@0.61.0"
-  - "@oxfmt/binding-linux-arm-musleabihf@0.61.0"
-  - "@oxfmt/binding-linux-arm64-gnu@0.61.0"
-  - "@oxfmt/binding-linux-arm64-musl@0.61.0"
-  - "@oxfmt/binding-linux-ppc64-gnu@0.61.0"
-  - "@oxfmt/binding-linux-riscv64-gnu@0.61.0"
-  - "@oxfmt/binding-linux-riscv64-musl@0.61.0"
-  - "@oxfmt/binding-linux-s390x-gnu@0.61.0"
-  - "@oxfmt/binding-linux-x64-gnu@0.61.0"
-  - "@oxfmt/binding-linux-x64-musl@0.61.0"
-  - "@oxfmt/binding-openharmony-arm64@0.61.0"
-  - "@oxfmt/binding-win32-arm64-msvc@0.61.0"
-  - "@oxfmt/binding-win32-ia32-msvc@0.61.0"
-  - "@oxfmt/binding-win32-x64-msvc@0.61.0"
-  - "@oxlint/binding-android-arm-eabi@1.76.0"
-  - "@oxlint/binding-android-arm64@1.76.0"
-  - "@oxlint/binding-darwin-arm64@1.76.0"
-  - "@oxlint/binding-darwin-x64@1.76.0"
-  - "@oxlint/binding-freebsd-x64@1.76.0"
-  - "@oxlint/binding-linux-arm-gnueabihf@1.76.0"
-  - "@oxlint/binding-linux-arm-musleabihf@1.76.0"
-  - "@oxlint/binding-linux-arm64-gnu@1.76.0"
-  - "@oxlint/binding-linux-arm64-musl@1.76.0"
-  - "@oxlint/binding-linux-ppc64-gnu@1.76.0"
-  - "@oxlint/binding-linux-riscv64-gnu@1.76.0"
-  - "@oxlint/binding-linux-riscv64-musl@1.76.0"
-  - "@oxlint/binding-linux-s390x-gnu@1.76.0"
-  - "@oxlint/binding-linux-x64-gnu@1.76.0"
-  - "@oxlint/binding-linux-x64-musl@1.76.0"
-  - "@oxlint/binding-openharmony-arm64@1.76.0"
-  - "@oxlint/binding-win32-arm64-msvc@1.76.0"
-  - "@oxlint/binding-win32-ia32-msvc@1.76.0"
-  - "@oxlint/binding-win32-x64-msvc@1.76.0"
+  - '@tanstack/react-db@0.1.88 || 0.3.5 || 0.5.9'
+  - '@oxfmt/binding-android-arm-eabi@0.61.0'
+  - '@oxfmt/binding-android-arm64@0.61.0'
+  - '@oxfmt/binding-darwin-arm64@0.61.0'
+  - '@oxfmt/binding-darwin-x64@0.61.0'
+  - '@oxfmt/binding-freebsd-x64@0.61.0'
+  - '@oxfmt/binding-linux-arm-gnueabihf@0.61.0'
+  - '@oxfmt/binding-linux-arm-musleabihf@0.61.0'
+  - '@oxfmt/binding-linux-arm64-gnu@0.61.0'
+  - '@oxfmt/binding-linux-arm64-musl@0.61.0'
+  - '@oxfmt/binding-linux-ppc64-gnu@0.61.0'
+  - '@oxfmt/binding-linux-riscv64-gnu@0.61.0'
+  - '@oxfmt/binding-linux-riscv64-musl@0.61.0'
+  - '@oxfmt/binding-linux-s390x-gnu@0.61.0'
+  - '@oxfmt/binding-linux-x64-gnu@0.61.0'
+  - '@oxfmt/binding-linux-x64-musl@0.61.0'
+  - '@oxfmt/binding-openharmony-arm64@0.61.0'
+  - '@oxfmt/binding-win32-arm64-msvc@0.61.0'
+  - '@oxfmt/binding-win32-ia32-msvc@0.61.0'
+  - '@oxfmt/binding-win32-x64-msvc@0.61.0'
+  - '@oxlint/binding-android-arm-eabi@1.76.0'
+  - '@oxlint/binding-android-arm64@1.76.0'
+  - '@oxlint/binding-darwin-arm64@1.76.0'
+  - '@oxlint/binding-darwin-x64@1.76.0'
+  - '@oxlint/binding-freebsd-x64@1.76.0'
+  - '@oxlint/binding-linux-arm-gnueabihf@1.76.0'
+  - '@oxlint/binding-linux-arm-musleabihf@1.76.0'
+  - '@oxlint/binding-linux-arm64-gnu@1.76.0'
+  - '@oxlint/binding-linux-arm64-musl@1.76.0'
+  - '@oxlint/binding-linux-ppc64-gnu@1.76.0'
+  - '@oxlint/binding-linux-riscv64-gnu@1.76.0'
+  - '@oxlint/binding-linux-riscv64-musl@1.76.0'
+  - '@oxlint/binding-linux-s390x-gnu@1.76.0'
+  - '@oxlint/binding-linux-x64-gnu@1.76.0'
+  - '@oxlint/binding-linux-x64-musl@1.76.0'
+  - '@oxlint/binding-openharmony-arm64@1.76.0'
+  - '@oxlint/binding-win32-arm64-msvc@1.76.0'
+  - '@oxlint/binding-win32-ia32-msvc@1.76.0'
+  - '@oxlint/binding-win32-x64-msvc@1.76.0'
   - oxfmt@0.61.0
   - oxlint@1.76.0
-  - "@tanstack/devtools-event-bus@0.4.3"
-  - "@tanstack/devtools-ui@0.7.1"
-  - "@tanstack/devtools@0.14.1"
-  - "@tanstack/react-devtools@0.10.11"
+  - '@tanstack/devtools-event-bus@0.4.3'
+  - '@tanstack/devtools-ui@0.7.1'
+  - '@tanstack/devtools@0.14.1'
+  - '@tanstack/react-devtools@0.10.11'
   - '@portabletext/editor@8.0.2'
   - '@portabletext/html@2.0.0'
   - '@portabletext/keyboard-shortcuts@3.0.0'
@@ -104,3 +104,7 @@ minimumReleaseAgeExclude:
   - '@sanity/util@6.11.0'
   - '@sanity/vision@6.11.0'
   - sanity@6.11.0
+  - '@tanstack/db-ivm@0.2.0'
+  - '@tanstack/react-virtual@3.14.19'
+  - '@tanstack/virtual-core@3.19.4'
+  - lucide-react@1.57.0
