@@ -10,7 +10,7 @@ import 'prismjs/components/prism-tsx';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
 
-import { urlFor } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity/client/sanity';
 
 const CodeBlock = ({
   value,

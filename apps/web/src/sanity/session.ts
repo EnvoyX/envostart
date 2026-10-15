@@ -1,5 +1,6 @@
 import type { loadQuery } from '@sanity/react-loader';
-import { useSession } from '@tanstack/react-start/server';
+import { getCookie, setCookie } from '@tanstack/react-start/server';
+import { getIronSession } from 'iron-session';
 
 import { env } from '@/env';
 
@@ -9,16 +10,19 @@ type SanitySessionData = {
 };
 
 export function getSanitySession() {
-  return useSession<SanitySessionData>({
-    name: '__sanity_preview',
-    password: env.SANITY_SESSION_SECRET,
-    cookie: {
-      httpOnly: true,
-      path: '/',
-      sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
-      secure: env.NODE_ENV === 'production',
+  return getIronSession<SanitySessionData>(
+    { read: getCookie, write: setCookie },
+    {
+      cookieName: '__sanity_preview',
+      password: env.SANITY_SESSION_SECRET,
+      cookieOptions: {
+        httpOnly: true,
+        path: '/',
+        sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
+        secure: env.NODE_ENV === 'production',
+      },
     },
-  });
+  );
 }
 
 export async function getPreviewData(_request: Request): Promise<{
@@ -26,9 +30,9 @@ export async function getPreviewData(_request: Request): Promise<{
   options: Parameters<typeof loadQuery>[2];
 }> {
   const session = await getSanitySession();
-  const preview = session.data.previewMode || false;
+  const preview = session.previewMode || false;
 
-  const rawPerspective = session.data.perspective;
+  const rawPerspective = session.perspective;
   return {
     preview,
     options: preview

@@ -1,48 +1,20 @@
-import { createFileRoute, notFound } from '@tanstack/react-router';
-import { redirect } from '@tanstack/react-router';
-import { createServerFn } from '@tanstack/react-start';
-import groq from 'groq';
+import { createFileRoute, notFound } from "@tanstack/react-router";
+import { redirect } from "@tanstack/react-router";
 
-import { SanityPortableText } from '@/components/web/SanityPortableText';
-import { sanityClient, urlFor } from '@/lib/sanity';
-import { getPreviewData } from '@/sanity/session';
+import { SanityPortableText } from "@/components/web/SanityPortableText";
+import { fetchPostBySlug } from "@/data/sanity/posts";
+import { urlFor } from "@/lib/sanity/client/sanity";
 
-const fetchPostBySlug = createServerFn({ method: 'GET' })
-  .validator((slug: string) => slug)
-  .handler(async ({ data: slug, context }) => {
-    const query = groq`*[_type == "post" && slug.current == $slug][0]{
-          _id,
-          title,
-          slug,
-          publishedAt,
-          excerpt,
-          mainImage,
-          body,
-          visibility,
-          author->{
-            name,
-            avatar
-          },
-          categories[]->{
-            title
-          },
-          tags
-        }`;
-    const { options } = await getPreviewData(context.req);
-    const post = await sanityClient.fetch(query, { slug }, options);
-    return post;
-  });
-
-export const Route = createFileRoute('/envologs/$slug/')({
+export const Route = createFileRoute("/envologs/$slug/")({
   beforeLoad: async ({ params, context }) => {
     const post = await fetchPostBySlug({ data: params.slug });
-    if (!context.session && post.visibility !== 'public')
+    if (!context.session && post.visibility !== "public")
       throw redirect({
-        to: '/login',
+        to: "/login",
       });
-    else if (context?.user?.role === 'USER' && post.visibility !== 'public')
+    else if (context?.user?.role === "USER" && post.visibility !== "public")
       throw redirect({
-        to: '/envologs',
+        to: "/envologs",
       });
     return { post };
   },
@@ -62,7 +34,7 @@ export const Route = createFileRoute('/envologs/$slug/')({
     return {
       meta: [
         { title: `${post.title} | Envologs` },
-        { name: 'description', content: post.excerpt || post.title },
+        { name: "description", content: post.excerpt || post.title },
       ],
     };
   },
@@ -104,10 +76,10 @@ function PostDetailPage() {
             <p className="font-medium text-neutral-900 dark:text-neutral-200">{post.author.name}</p>
           )}
           <time dateTime={post.publishedAt}>
-            {new Date(post.publishedAt).toLocaleDateString('en-US', {
-              month: 'short',
-              day: 'numeric',
-              year: 'numeric',
+            {new Date(post.publishedAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
             })}
           </time>
         </div>
@@ -116,7 +88,7 @@ function PostDetailPage() {
       {post.mainImage && (
         <div className="mb-10 overflow-hidden rounded-xl">
           <img
-            src={urlFor(post.mainImage).width(1200).height(675).fit('crop').url()}
+            src={urlFor(post.mainImage).width(1200).height(675).fit("crop").url()}
             alt={post.mainImage.alt || post.title}
             className="w-full h-auto aspect-video object-cover"
           />

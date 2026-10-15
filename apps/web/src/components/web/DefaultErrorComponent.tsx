@@ -1,8 +1,8 @@
-import { ErrorComponentProps, useRouter } from "@tanstack/react-router";
-import { useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { ErrorComponentProps, useRouter } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
 
-import { Button } from "../ui/button";
+import { Button } from '../ui/button';
 
 export function DefaultErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
@@ -48,7 +48,7 @@ export function DefaultErrorComponent({ error, reset }: ErrorComponentProps) {
 
         <div className="mt-8 overflow-hidden rounded-lg bg-slate-900/50 border border-slate-800 p-4 text-left">
           <pre className="font-mono whitespace-pre-wrap text-xs text-zinc-400 ">
-            {error.message || "Unknown system error"}
+            {`Unknown system error`}
           </pre>
         </div>
 
@@ -66,7 +66,7 @@ export function DefaultErrorComponent({ error, reset }: ErrorComponentProps) {
           <Button
             onClick={() => {
               navigate({
-                to: "/",
+                to: '/',
                 replace: true,
               });
             }}

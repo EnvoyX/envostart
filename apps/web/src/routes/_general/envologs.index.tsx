@@ -1,55 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { createServerFn } from '@tanstack/react-start';
-import groq from 'groq';
 
-import { sanityClient, urlFor } from '@/lib/sanity';
-import { getPreviewData } from '@/sanity/session';
-
-interface PostSummary {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  publishedAt: string;
-  excerpt?: string;
-  readingTime?: number;
-  mainImage?: {
-    asset: { _ref: string };
-    alt?: string;
-  };
-  visibility: 'public' | 'private';
-  author?: {
-    name: string;
-    avatar?: { asset: { _ref: string } };
-  };
-  categories?: Array<{
-    title: string;
-  }>;
-}
-
-const fetchAllPosts = createServerFn({ method: 'GET' }).handler(async ({ context }) => {
-  const query = groq`*[
-      _type == "post" &&
-      defined(slug.current)
-    ] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      publishedAt,
-      excerpt,
-      readingTime,
-      mainImage,
-      visibility,
-      author->{
-        name,
-        avatar
-      },
-      categories[]->{
-        title
-      }
-    }`;
-  const { options } = await getPreviewData(context.req);
-  return await sanityClient.fetch<PostSummary[]>(query, {}, options);
-});
+import { fetchAllPosts } from '@/data/sanity/posts';
+import { urlFor } from '@/lib/sanity/client/sanity';
 
 export const Route = createFileRoute('/_general/envologs/')({
   loader: async ({ context }) => {
