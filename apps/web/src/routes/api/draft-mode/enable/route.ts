@@ -28,19 +28,16 @@ export const Route = createFileRoute('/api/draft-mode/enable')({
           return new Response('Invalid preview URL', { status: 401 });
         }
 
-        // Get or create session
         const session = await getSanitySession();
 
-        // Get perspective from URL query params
+        // get perspective from URL query params
         const url = new URL(request.url);
         const perspectiveParam = url.searchParams.get('sanity-preview-perspective');
         const perspective = (perspectiveParam as ClientPerspective) || 'drafts';
 
-        // Enable preview mode
-        await session.update({
-          previewMode: true,
-          perspective: perspective as string,
-        });
+        session.perspective = perspective as string;
+        session.previewMode = true;
+        await session.save();
 
         return new Response(null, {
           status: 307,
