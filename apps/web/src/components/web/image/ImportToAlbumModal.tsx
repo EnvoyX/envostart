@@ -1,11 +1,11 @@
-import { IconAlbumOff } from "@tabler/icons-react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useRouter } from "@tanstack/react-router";
-import { Effect } from "effect";
-import { FolderIcon, ImageIcon, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { IconAlbumOff } from '@tabler/icons-react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useRouter } from '@tanstack/react-router';
+import { Effect } from 'effect';
+import { FolderIcon, ImageIcon, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogHeader,
   DialogTitle,
   // DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Empty,
   EmptyContent,
@@ -22,14 +22,14 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import { getAlbumsFn } from "@/data/album";
-import { ImportImageToAlbumFn } from "@/data/image";
+} from '@/components/ui/empty';
+import { getAlbumsFn } from '@/data/album';
+import { ImportImageToAlbumFn } from '@/data/image';
 import {
   dashboardAlbumIdOptions,
   imageGalleryOptions,
-} from "@/data/query-options/dashboardQueryOptions";
-import { useImageStore } from "@/store/image";
+} from '@/data/query-options/dashboardQueryOptions';
+import { useImageStore } from '@/store/image';
 
 export function ImportToAlbumModal() {
   const queryClient = useQueryClient();
@@ -38,7 +38,7 @@ export function ImportToAlbumModal() {
   const router = useRouter();
   const navigate = useNavigate();
   const { data: albums, isPending } = useQuery({
-    queryKey: ["albums"],
+    queryKey: ['albums'],
     queryFn: async () => {
       const albums = await getAlbumsFn();
       return albums;
@@ -48,9 +48,9 @@ export function ImportToAlbumModal() {
 
   async function handleImportToAlbum(albumId: string) {
     const importFlow = Effect.gen(function* () {
-      toast.loading("Adding image to ablum...", {
+      toast.loading('Adding image to ablum...', {
         description: `Album | ${albums?.find((album) => album.id === albumId)?.name}`,
-        id: "add-album",
+        id: 'add-album',
       });
       yield* Effect.tryPromise(() =>
         ImportImageToAlbumFn({
@@ -61,25 +61,25 @@ export function ImportToAlbumModal() {
           },
         }),
       );
-      toast.success("Image added to album successfully", {
-        id: "add-album",
+      toast.success('Image added to album successfully', {
+        id: 'add-album',
         description: `Album | ${albums?.find((album) => album.id === albumId)?.name}`,
       });
     }).pipe(
-      Effect.catchAll((error) =>
+      Effect.catch((error) =>
         Effect.sync(() => {
-          toast.error("Failed to add image to album", {
-            id: "add-album",
+          toast.error('Failed to add image to album', {
+            id: 'add-album',
           });
           console.error(error.message);
         }),
       ),
       Effect.ensuring(
         Effect.sync(() => {
-          toggleDialog("close");
+          toggleDialog('close');
           void router.invalidate();
           void queryClient.invalidateQueries({
-            queryKey: ["albums"],
+            queryKey: ['albums'],
           });
           void queryClient.invalidateQueries({
             queryKey: [...imageGalleryOptions().queryKey],
@@ -102,7 +102,7 @@ export function ImportToAlbumModal() {
     <Dialog
       open={isImportToAlbumModalOpen}
       onOpenChange={(open) => {
-        onOpenChangeDialog("open", open);
+        onOpenChangeDialog('open', open);
       }}
     >
       <DialogContent className="sm:max-w-6xl p-0 overflow-hidden border-zinc-800 bg-zinc-950">
@@ -125,7 +125,7 @@ export function ImportToAlbumModal() {
                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 "
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
-                    "https://placehold.co/600x800?text=Invalid+Image";
+                    'https://placehold.co/600x800?text=Invalid+Image';
                 }}
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -155,7 +155,7 @@ export function ImportToAlbumModal() {
                       size="sm"
                       onClick={() => {
                         void navigate({
-                          to: "/dashboard/albums",
+                          to: '/dashboard/albums',
                         });
                       }}
                     >

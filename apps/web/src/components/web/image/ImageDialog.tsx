@@ -1,12 +1,12 @@
-import { useForm } from "@tanstack/react-form";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { Effect } from "effect";
-import { ImageIcon, Loader2, MailboxIcon } from "lucide-react";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { useForm } from '@tanstack/react-form';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
+import { Effect } from 'effect';
+import { ImageIcon, Loader2, MailboxIcon } from 'lucide-react';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -14,20 +14,20 @@ import {
   DialogHeader,
   DialogTitle,
   // DialogTrigger,
-} from "@/components/ui/dialog";
-import { Field, FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { getAlbumByIdFn } from "@/data/album";
-import { editImageFn } from "@/data/image";
+} from '@/components/ui/dialog';
+import { Field, FieldError } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
+import { getAlbumByIdFn } from '@/data/album';
+import { editImageFn } from '@/data/image';
 import {
   dashboardAlbumIdOptions,
   imageGalleryOptions,
-} from "@/data/query-options/dashboardQueryOptions";
-import { editImageSchema } from "@/schemas/image";
-import { useImageStore } from "@/store/image";
+} from '@/data/query-options/dashboardQueryOptions';
+import { editImageSchema } from '@/schemas/image';
+import { useImageStore } from '@/store/image';
 
 export function ImageDialog() {
   const router = useRouter();
@@ -42,11 +42,11 @@ export function ImageDialog() {
     toggleDialog,
   } = useImageStore();
   const { data: album } = useQuery({
-    queryKey: ["album-gallery", initialValues?.albumId],
+    queryKey: ['album-gallery', initialValues?.albumId],
     queryFn: async () => {
       const album = await getAlbumByIdFn({
         data: {
-          albumId: initialValues?.albumId ?? "",
+          albumId: initialValues?.albumId ?? '',
         },
       });
       return album;
@@ -55,10 +55,10 @@ export function ImageDialog() {
   });
   const form = useForm({
     defaultValues: {
-      title: initialValues ? initialValues.title : "",
-      description: initialValues ? initialValues.description : "",
+      title: initialValues ? initialValues.title : '',
+      description: initialValues ? initialValues.description : '',
       published: initialValues ? initialValues.published : false,
-      imageUrl: initialValues ? imageUrl : "",
+      imageUrl: initialValues ? imageUrl : '',
       showPrivateToFollowers: initialValues ? initialValues.showPrivateToFollowers : false,
     },
     validators: {
@@ -71,8 +71,8 @@ export function ImageDialog() {
     },
     onSubmit: async ({ value }) => {
       const workflow = Effect.gen(function* () {
-        toast.loading("Editing image...", {
-          id: "edit-image",
+        toast.loading('Editing image...', {
+          id: 'edit-image',
         });
         yield* Effect.tryPromise(() =>
           editImageFn({
@@ -86,14 +86,14 @@ export function ImageDialog() {
             },
           }),
         );
-        toast.success("Image edited successfully!", {
-          id: "edit-image",
+        toast.success('Image edited successfully!', {
+          id: 'edit-image',
         });
       }).pipe(
-        Effect.catchAll((error) =>
+        Effect.catch((error) =>
           Effect.sync(() => {
-            toast.error("Failed to edit image", {
-              id: "edit-image",
+            toast.error('Failed to edit image', {
+              id: 'edit-image',
             });
             console.error(error.message);
           }),
@@ -109,7 +109,7 @@ export function ImageDialog() {
                 queryKey: [...dashboardAlbumIdOptions(initialValues.albumId).queryKey],
               });
             void router.invalidate();
-            toggleDialog("close", "", "");
+            toggleDialog('close', '', '');
           }),
         ),
       );
@@ -121,9 +121,9 @@ export function ImageDialog() {
   useEffect(() => {
     if (isEditDialogOpen)
       form.reset({
-        title: initialValues?.title ?? "",
-        description: initialValues?.description ?? "",
-        imageUrl: imageUrl ?? "",
+        title: initialValues?.title ?? '',
+        description: initialValues?.description ?? '',
+        imageUrl: imageUrl ?? '',
         published: initialValues?.published ?? false,
         showPrivateToFollowers: initialValues?.showPrivateToFollowers ?? false,
       });
@@ -132,7 +132,7 @@ export function ImageDialog() {
     <Dialog
       open={isEditDialogOpen}
       onOpenChange={(open) => {
-        onOpenChangeDialog("edit", open);
+        onOpenChangeDialog('edit', open);
         setInitialValues(null);
       }}
     >
@@ -169,21 +169,21 @@ export function ImageDialog() {
                     <div className="space-y-0.5">
                       <Label className="text-sm font-medium text-zinc-200">
                         Visibility:
-                        <span className={field.state.value ? "text-primary" : "text-zinc-400"}>
-                          {field.state.value ? "Public" : "Private"}
+                        <span className={field.state.value ? 'text-primary' : 'text-zinc-400'}>
+                          {field.state.value ? 'Public' : 'Private'}
                         </span>
                       </Label>
                       <p className="text-xs text-zinc-500">
                         {field.state.value
-                          ? "Image is visible to all users"
-                          : "Image is hidden to all users"}
+                          ? 'Image is visible to all users'
+                          : 'Image is hidden to all users'}
                       </p>
                     </div>
                     <Switch
                       checked={field.state.value}
                       onCheckedChange={(checked) => {
                         field.handleChange(checked);
-                        if (checked === true) form.setFieldValue("showPrivateToFollowers", false);
+                        if (checked === true) form.setFieldValue('showPrivateToFollowers', false);
                       }}
                       className="data-[state=checked]:bg-primary"
                     />
@@ -201,17 +201,17 @@ export function ImageDialog() {
                           <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-colors hover:border-primary/30 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="space-y-0.5">
                               <Label className="text-sm font-medium text-zinc-200">
-                                Show Private:{" "}
+                                Show Private:{' '}
                                 <span
-                                  className={field.state.value ? "text-primary" : "text-zinc-400"}
+                                  className={field.state.value ? 'text-primary' : 'text-zinc-400'}
                                 >
-                                  {field.state.value ? "Show" : ` Hidden`}
+                                  {field.state.value ? 'Show' : ` Hidden`}
                                 </span>
                               </Label>
                               <p className="text-xs text-zinc-500">
                                 {field.state.value
-                                  ? "Image is visible to followers"
-                                  : "Image is hidden to followers"}
+                                  ? 'Image is visible to followers'
+                                  : 'Image is hidden to followers'}
                               </p>
                             </div>
                             <Switch
@@ -277,8 +277,8 @@ export function ImageDialog() {
                           <span
                             className={`text-[10px] font-mono px-2 py-0.5 rounded-md border ${
                               charCount > 0
-                                ? "text-primary border-primary/20 bg-primary/5"
-                                : "text-zinc-600 border-zinc-800"
+                                ? 'text-primary border-primary/20 bg-primary/5'
+                                : 'text-zinc-600 border-zinc-800'
                             }`}
                           >
                             {charCount} CHARS
@@ -295,7 +295,7 @@ export function ImageDialog() {
                               placeholder:text-zinc-600 text-zinc-200
                               focus-visible:ring-primary/40 focus-visible:border-primary/50
                               transition-all duration-300 rounded-xl
-                              ${isInvalid ? "border-red-500/50 focus-visible:ring-red-500/20" : "hover:border-zinc-700"}
+                              ${isInvalid ? 'border-red-500/50 focus-visible:ring-red-500/20' : 'hover:border-zinc-700'}
                             `}
                             value={field.state.value}
                             onBlur={field.handleBlur}
@@ -377,7 +377,7 @@ export function ImageDialog() {
             <form.Subscribe
               selector={(state) => state.values.imageUrl}
               children={(image) => {
-                if (!image || image.trim() === "") {
+                if (!image || image.trim() === '') {
                   return (
                     <div className="relative z-10 text-center space-y-4">
                       <div className="mx-auto size-20 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center">
@@ -401,7 +401,7 @@ export function ImageDialog() {
                           className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 "
                           onError={(e) => {
                             (e.target as HTMLImageElement).src =
-                              "https://placehold.co/600x800?text=Invalid+Image";
+                              'https://placehold.co/600x800?text=Invalid+Image';
                           }}
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />

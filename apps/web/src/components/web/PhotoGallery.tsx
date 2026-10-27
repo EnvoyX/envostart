@@ -223,7 +223,7 @@ export default function PhotoGallery({
           };
         });
     }).pipe(
-      Effect.catchAll((error) =>
+      Effect.catch((error) =>
         Effect.sync(() => {
           toast.error(actionMode.failed, {
             id: `action-${photoId}`,

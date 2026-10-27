@@ -1,13 +1,13 @@
-import { useForm } from "@tanstack/react-form";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { Effect } from "effect";
-import { CheckCircle2, Loader2, MailboxIcon, MousePointer2, RotateCw, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { match } from "ts-pattern";
+import { useForm } from '@tanstack/react-form';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
+import { Effect } from 'effect';
+import { CheckCircle2, Loader2, MailboxIcon, MousePointer2, RotateCw, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { match } from 'ts-pattern';
 
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -15,20 +15,20 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "@/components/ui/empty";
-import { FieldError } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { editImagesFn, getImagesWithAlbumFn } from "@/data/image";
+} from '@/components/ui/dialog';
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty';
+import { FieldError } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { editImagesFn, getImagesWithAlbumFn } from '@/data/image';
 import {
   dashboardAlbumIdOptions,
   imageGalleryOptions,
-} from "@/data/query-options/dashboardQueryOptions";
-import { cn } from "@/lib/utils";
-import { editImagesSchema } from "@/schemas/image";
-import { useImageStore } from "@/store/image";
+} from '@/data/query-options/dashboardQueryOptions';
+import { cn } from '@/lib/utils';
+import { editImagesSchema } from '@/schemas/image';
+import { useImageStore } from '@/store/image';
 
 export function EditImagesDialog() {
   const { isBulkEditDialogOpen, onOpenChangeDialog, toggleDialog, albumId } = useImageStore();
@@ -37,7 +37,7 @@ export function EditImagesDialog() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(() => new Set());
   const [lastSelectedId, setLastSelectedId] = useState<string | null>(null);
   const { data: images, isPending } = useQuery({
-    queryKey: ["edit-images"],
+    queryKey: ['edit-images'],
     queryFn: async () => {
       const images = await getImagesWithAlbumFn();
       return images;
@@ -74,7 +74,7 @@ export function EditImagesDialog() {
         queryKey: [...dashboardAlbumIdOptions(albumId).queryKey],
       });
     void router.invalidate();
-    toggleDialog("close");
+    toggleDialog('close');
   });
   const form = useForm({
     defaultValues: {
@@ -93,17 +93,17 @@ export function EditImagesDialog() {
     onSubmit: async ({ value }) => {
       const workflow = Effect.gen(function* () {
         toast.loading(`Updating ${value.images.length} images...`, {
-          id: "edit-images",
+          id: 'edit-images',
         });
         yield* editImagesEffect(value.published, value.showPrivateToFollowers, value.images);
         toast.success(`Updated ${value.images.length} images successfully`, {
-          id: "edit-images",
+          id: 'edit-images',
         });
       }).pipe(
-        Effect.catchAll((error) =>
+        Effect.catch((error) =>
           Effect.sync(() => {
             toast.error(`Failed to update images`, {
-              id: "edit-images",
+              id: 'edit-images',
             });
             console.error(error.message);
           }),
@@ -137,14 +137,14 @@ export function EditImagesDialog() {
           imagesToAppend.push({
             id: img.id,
             url: img.url,
-            title: img.title ?? "",
-            description: img.description ?? "",
+            title: img.title ?? '',
+            description: img.description ?? '',
           });
         }
       });
 
       if (imagesToAppend.length > 0) {
-        form.setFieldValue("images", (prev) => [...prev, ...imagesToAppend]);
+        form.setFieldValue('images', (prev) => [...prev, ...imagesToAppend]);
         setSelectedIds(newSelection);
       }
 
@@ -158,17 +158,17 @@ export function EditImagesDialog() {
     // handle single toggle selection
     if (newSelection.has(imgId)) {
       newSelection.delete(imgId);
-      form.setFieldValue("images", (prev) => prev.filter((prevImg) => prevImg.id !== imgId));
+      form.setFieldValue('images', (prev) => prev.filter((prevImg) => prevImg.id !== imgId));
       setLastSelectedId(null);
     } else {
       newSelection.add(imgId);
-      form.setFieldValue("images", (prev) => [
+      form.setFieldValue('images', (prev) => [
         ...prev,
         {
-          id: selectedImage?.id ?? "",
-          url: selectedImage?.url ?? "",
-          title: selectedImage?.title ?? "",
-          description: selectedImage?.description ?? "",
+          id: selectedImage?.id ?? '',
+          url: selectedImage?.url ?? '',
+          title: selectedImage?.title ?? '',
+          description: selectedImage?.description ?? '',
         },
       ]);
       setLastSelectedId(imgId);
@@ -194,7 +194,7 @@ export function EditImagesDialog() {
     <Dialog
       open={isBulkEditDialogOpen}
       onOpenChange={(open) => {
-        onOpenChangeDialog("bulk-edit", open);
+        onOpenChangeDialog('bulk-edit', open);
       }}
     >
       <DialogContent className="sm:max-w-6xl p-0 overflow-hidden border-zinc-800 bg-zinc-950">
@@ -224,22 +224,22 @@ export function EditImagesDialog() {
                   <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-colors hover:border-primary/30">
                     <div className="space-y-0.5">
                       <Label className="text-sm font-medium text-zinc-200">
-                        Visibility:{" "}
-                        <span className={field.state.value ? "text-primary" : "text-zinc-400"}>
-                          {field.state.value ? "Public" : "Private"}
+                        Visibility:{' '}
+                        <span className={field.state.value ? 'text-primary' : 'text-zinc-400'}>
+                          {field.state.value ? 'Public' : 'Private'}
                         </span>
                       </Label>
                       <p className="text-xs text-zinc-500">
                         {field.state.value
-                          ? "images are visible to all users"
-                          : "images are hidden to all users"}
+                          ? 'images are visible to all users'
+                          : 'images are hidden to all users'}
                       </p>
                     </div>
                     <Switch
                       checked={field.state.value}
                       onCheckedChange={(checked) => {
                         field.handleChange(checked);
-                        if (checked === true) form.setFieldValue("showPrivateToFollowers", false);
+                        if (checked === true) form.setFieldValue('showPrivateToFollowers', false);
                       }}
                       className="data-[state=checked]:bg-primary"
                     />
@@ -257,17 +257,17 @@ export function EditImagesDialog() {
                           <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-colors hover:border-primary/30 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="space-y-0.5">
                               <Label className="text-sm font-medium text-zinc-200">
-                                Show Private:{" "}
+                                Show Private:{' '}
                                 <span
-                                  className={field.state.value ? "text-primary" : "text-zinc-400"}
+                                  className={field.state.value ? 'text-primary' : 'text-zinc-400'}
                                 >
-                                  {field.state.value ? "Show" : ` Hidden`}
+                                  {field.state.value ? 'Show' : ` Hidden`}
                                 </span>
                               </Label>
                               <p className="text-xs text-zinc-500">
                                 {field.state.value
-                                  ? "images are visible to followers"
-                                  : "images are hidden to followers"}
+                                  ? 'images are visible to followers'
+                                  : 'images are hidden to followers'}
                               </p>
                             </div>
                             <Switch
@@ -296,12 +296,12 @@ export function EditImagesDialog() {
                           <span
                             className={cn(
                               buttonVariants({
-                                variant: "default",
+                                variant: 'default',
                                 className:
-                                  "bg-primary hover:bg-primary text-white rounded-xl font-bold shadow-lg shadow-zinc-900/20 animate-in fade-in zoom-in duration-300",
+                                  'bg-primary hover:bg-primary text-white rounded-xl font-bold shadow-lg shadow-zinc-900/20 animate-in fade-in zoom-in duration-300',
                               }),
                               {
-                                "opacity-50 cursor-not-allowed": isSubmitting,
+                                'opacity-50 cursor-not-allowed': isSubmitting,
                               },
                             )}
                           >
@@ -316,15 +316,15 @@ export function EditImagesDialog() {
                             variant="default"
                             size="icon"
                             className={cn(
-                              "bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer",
+                              'bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer',
                               {
-                                "opacity-50 cursor-not-allowed": isSubmitting,
+                                'opacity-50 cursor-not-allowed': isSubmitting,
                               },
                             )}
                             onClick={() => {
                               setSelectedIds(new Set());
                               setLastSelectedId(null);
-                              form.setFieldValue("images", []);
+                              form.setFieldValue('images', []);
                             }}
                           >
                             <RotateCw className="size-4" />
@@ -361,25 +361,25 @@ export function EditImagesDialog() {
                                 group relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300
                                 ${
                                   isSelected
-                                    ? "ring-4 ring-primary ring-offset-4 ring-offset-zinc-950 scale-[0.98]"
-                                    : "hover:scale-[1.02] border border-zinc-800"
+                                    ? 'ring-4 ring-primary ring-offset-4 ring-offset-zinc-950 scale-[0.98]'
+                                    : 'hover:scale-[1.02] border border-zinc-800'
                                 }
                               `}
                             >
                               <img
                                 src={img.url}
                                 alt="Asset"
-                                className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
+                                className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}
                               />
 
                               {/* selection overlay */}
                               <div
-                                className={`absolute inset-0 transition-colors duration-300 ${isSelected ? "bg-primary/10" : "bg-transparent group-hover:bg-black/20"}`}
+                                className={`absolute inset-0 transition-colors duration-300 ${isSelected ? 'bg-primary/10' : 'bg-transparent group-hover:bg-black/20'}`}
                               />
 
                               {/* status icon */}
                               <div
-                                className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? "bg-primary scale-100 shadow-lg" : "bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50"}`}
+                                className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? 'bg-primary scale-100 shadow-lg' : 'bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50'}`}
                               >
                                 <CheckCircle2 className="size-4 text-white" />
                               </div>
@@ -549,12 +549,12 @@ export function EditImagesDialog() {
                       <span
                         className={cn(
                           buttonVariants({
-                            variant: "default",
+                            variant: 'default',
                             className:
-                              "bg-primary hover:bg-primary text-white rounded-xl font-bold shadow-lg shadow-zinc-900/20 animate-in fade-in zoom-in duration-300",
+                              'bg-primary hover:bg-primary text-white rounded-xl font-bold shadow-lg shadow-zinc-900/20 animate-in fade-in zoom-in duration-300',
                           }),
                           {
-                            "opacity-50 cursor-not-allowed": isSubmitting,
+                            'opacity-50 cursor-not-allowed': isSubmitting,
                           },
                         )}
                       >
@@ -569,15 +569,15 @@ export function EditImagesDialog() {
                         variant="default"
                         size="icon"
                         className={cn(
-                          "bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer",
+                          'bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer',
                           {
-                            "opacity-50 cursor-not-allowed": isSubmitting,
+                            'opacity-50 cursor-not-allowed': isSubmitting,
                           },
                         )}
                         onClick={() => {
                           setSelectedIds(new Set());
                           setLastSelectedId(null);
-                          form.setFieldValue("images", []);
+                          form.setFieldValue('images', []);
                         }}
                       >
                         <RotateCw className="size-4" />
@@ -614,25 +614,25 @@ export function EditImagesDialog() {
                             group relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300
                             ${
                               isSelected
-                                ? "ring-4 ring-primary ring-offset-4 ring-offset-zinc-950 scale-[0.98]"
-                                : "hover:scale-[1.02] border border-zinc-800"
+                                ? 'ring-4 ring-primary ring-offset-4 ring-offset-zinc-950 scale-[0.98]'
+                                : 'hover:scale-[1.02] border border-zinc-800'
                             }
                           `}
                         >
                           <img
                             src={img.url}
                             alt="Asset"
-                            className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
+                            className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}
                           />
 
                           {/* selection overlay */}
                           <div
-                            className={`absolute inset-0 transition-colors duration-300 ${isSelected ? "bg-primary/10" : "bg-transparent group-hover:bg-black/20"}`}
+                            className={`absolute inset-0 transition-colors duration-300 ${isSelected ? 'bg-primary/10' : 'bg-transparent group-hover:bg-black/20'}`}
                           />
 
                           {/* status icon */}
                           <div
-                            className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? "bg-primary scale-100 shadow-lg" : "bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50"}`}
+                            className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? 'bg-primary scale-100 shadow-lg' : 'bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50'}`}
                           >
                             <CheckCircle2 className="size-4 text-white" />
                           </div>

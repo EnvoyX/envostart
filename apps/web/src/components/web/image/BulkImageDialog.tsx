@@ -1,12 +1,12 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { Effect } from "effect";
-import { CheckCircle2, ImageIcon, Loader2, MousePointer2, RotateCw } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { match } from "ts-pattern";
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
+import { Effect } from 'effect';
+import { CheckCircle2, ImageIcon, Loader2, MousePointer2, RotateCw } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { match } from 'ts-pattern';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   // DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Empty,
   //   EmptyContent,
@@ -23,11 +23,11 @@ import {
   EmptyHeader,
   //   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty";
-import { deleteImagesFn, getImagesFn } from "@/data/image";
-import { imageGalleryOptions } from "@/data/query-options/dashboardQueryOptions";
-import { cn } from "@/lib/utils";
-import { useImageStore } from "@/store/image";
+} from '@/components/ui/empty';
+import { deleteImagesFn, getImagesFn } from '@/data/image';
+import { imageGalleryOptions } from '@/data/query-options/dashboardQueryOptions';
+import { cn } from '@/lib/utils';
+import { useImageStore } from '@/store/image';
 
 export function BulkImageDialog() {
   const queryClient = useQueryClient();
@@ -37,7 +37,7 @@ export function BulkImageDialog() {
   const [lastSelectedId, setLastSelectedId] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const { data: images, isPending } = useQuery({
-    queryKey: ["all-images"],
+    queryKey: ['all-images'],
     queryFn: async () => {
       const images = await getImagesFn();
       return images;
@@ -80,7 +80,7 @@ export function BulkImageDialog() {
     Effect.tryPromise(() => deleteImagesFn({ data: { imageIds } }));
 
   const runCleanup = Effect.sync(() => {
-    void queryClient.invalidateQueries({ queryKey: ["all-images"] });
+    void queryClient.invalidateQueries({ queryKey: ['all-images'] });
     void queryClient.invalidateQueries({
       queryKey: [...imageGalleryOptions().queryKey],
     });
@@ -96,24 +96,24 @@ export function BulkImageDialog() {
         action: () => deleteImagesEffect(idsArray),
         msg: `Deleting ${idsArray.length} images...`,
         success: `Images deleted successfully`,
-        failed: "Failed to delete images",
+        failed: 'Failed to delete images',
       },
     };
     const currentMode = modeConfig[bulkMode as keyof typeof modeConfig];
     if (!currentMode) return;
     const importWorkflow = Effect.gen(function* () {
-      toast.loading(currentMode.msg, { id: "bulk-import" });
+      toast.loading(currentMode.msg, { id: 'bulk-import' });
 
       yield* currentMode.action();
 
       // success side effects
-      toast.success(currentMode.success, { id: "bulk-import" });
+      toast.success(currentMode.success, { id: 'bulk-import' });
       setSelectedIds(new Set());
-      onOpenChangeDialog("bulk-delete", false);
+      onOpenChangeDialog('bulk-delete', false);
     }).pipe(
-      Effect.catchAll((error) =>
+      Effect.catch((error) =>
         Effect.sync(() => {
-          toast.error(currentMode.failed, { id: "bulk-import" });
+          toast.error(currentMode.failed, { id: 'bulk-import' });
           console.error(error.message);
         }),
       ),
@@ -128,7 +128,7 @@ export function BulkImageDialog() {
   return (
     <Dialog
       open={isBulkImageDialogOpen}
-      onOpenChange={(open) => onOpenChangeDialog("bulk-delete", open)}
+      onOpenChange={(open) => onOpenChangeDialog('bulk-delete', open)}
     >
       <DialogContent className="sm:max-w-6xl p-0 overflow-hidden border-zinc-800  shadow-2xl">
         <div className="flex flex-col md:flex-row h-[85vh] ">
@@ -141,31 +141,31 @@ export function BulkImageDialog() {
                 <DialogHeader className="flex flex-col">
                   <DialogTitle className="text-2xl font-bold text-zinc-100 tracking-tight">
                     {match(bulkMode)
-                      .with("add", () => "Add Photos")
-                      .with("remove", () => "Remove Photos")
-                      .with("delete", () => "Delete Photos")
-                      .with("edit", () => "Edit Photos")
-                      .with(null, () => "Bulk Image Dialog")
-                      .otherwise(() => "Bulk Image Dialog")}
+                      .with('add', () => 'Add Photos')
+                      .with('remove', () => 'Remove Photos')
+                      .with('delete', () => 'Delete Photos')
+                      .with('edit', () => 'Edit Photos')
+                      .with(null, () => 'Bulk Image Dialog')
+                      .otherwise(() => 'Bulk Image Dialog')}
                   </DialogTitle>
                   <DialogDescription className="text-zinc-400">
                     {match(bulkMode)
-                      .with("add", () => (
+                      .with('add', () => (
                         <>
                           Add <span className="text-primary-400 font-semibold">Images</span>
                         </>
                       ))
-                      .with("delete", () => (
+                      .with('delete', () => (
                         <>
                           Delete <span className="text-primary-400 font-semibold">Images</span>
                         </>
                       ))
-                      .with("remove", () => (
+                      .with('remove', () => (
                         <>
                           Remove <span className="text-primary-400 font-semibold">Images</span>
                         </>
                       ))
-                      .with("edit", () => (
+                      .with('edit', () => (
                         <>
                           Edit <span className="text-primary-400 font-semibold">Images</span>
                         </>
@@ -189,10 +189,10 @@ export function BulkImageDialog() {
                     onClick={handleBulkImport}
                     disabled={isImporting}
                     className={cn(
-                      "bg-primary-600 hover:bg-primary-500 text-white rounded-xl px-2 font-bold shadow-lg shadow-primary-900/20 animate-in fade-in zoom-in duration-300 cursor-pointer",
+                      'bg-primary-600 hover:bg-primary-500 text-white rounded-xl px-2 font-bold shadow-lg shadow-primary-900/20 animate-in fade-in zoom-in duration-300 cursor-pointer',
                       {
-                        "bg-destructive hover:bg-destructive/80 shadow-destructive/20":
-                          bulkMode === "delete" || bulkMode === "remove",
+                        'bg-destructive hover:bg-destructive/80 shadow-destructive/20':
+                          bulkMode === 'delete' || bulkMode === 'remove',
                       },
                     )}
                   >
@@ -201,10 +201,10 @@ export function BulkImageDialog() {
                       .with(false, () => <CheckCircle2 className="size-4" />)
                       .exhaustive()}
                     {match(bulkMode)
-                      .with("add", () => <>Import ({selectedIds.size})</>)
-                      .with("remove", () => <>Remove ({selectedIds.size})</>)
-                      .with("delete", () => <>Delete ({selectedIds.size})</>)
-                      .with("edit", () => <>Edit ({selectedIds.size})</>)
+                      .with('add', () => <>Import ({selectedIds.size})</>)
+                      .with('remove', () => <>Remove ({selectedIds.size})</>)
+                      .with('delete', () => <>Delete ({selectedIds.size})</>)
+                      .with('edit', () => <>Edit ({selectedIds.size})</>)
                       .with(null, () => null)
                       .otherwise(() => null)}
                   </Button>
@@ -212,7 +212,7 @@ export function BulkImageDialog() {
                     variant="default"
                     size="icon"
                     className={cn(
-                      "bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer",
+                      'bg-destructive/75 hover:bg-destructive/90 text-white rounded-xl font-bold shadow-lg shadow-destructive/20 animate-in fade-in zoom-in duration-300 cursor-pointer',
                     )}
                     onClick={() => {
                       setSelectedIds(new Set());
@@ -251,25 +251,25 @@ export function BulkImageDialog() {
                             group relative aspect-square rounded-xl overflow-hidden cursor-pointer transition-all duration-300
                             ${
                               isSelected
-                                ? "ring-4 ring-primary-500 ring-offset-4 ring-offset-zinc-950 scale-[0.98]"
-                                : "hover:scale-[1.02] border border-zinc-800"
+                                ? 'ring-4 ring-primary-500 ring-offset-4 ring-offset-zinc-950 scale-[0.98]'
+                                : 'hover:scale-[1.02] border border-zinc-800'
                             }
                           `}
                         >
                           <img
                             src={img.url}
                             alt="Asset"
-                            className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
+                            className={`w-full h-full object-cover transition-opacity duration-300 ${isSelected ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}
                           />
 
                           {/* selection overlay */}
                           <div
-                            className={`absolute inset-0 transition-colors duration-300 ${isSelected ? "bg-primary-500/10" : "bg-transparent group-hover:bg-black/20"}`}
+                            className={`absolute inset-0 transition-colors duration-300 ${isSelected ? 'bg-primary-500/10' : 'bg-transparent group-hover:bg-black/20'}`}
                           />
 
                           {/* status icon */}
                           <div
-                            className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? "bg-primary-500 scale-100 shadow-lg" : "bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50"}`}
+                            className={`absolute top-2 right-2 p-1 rounded-full transition-all duration-300 ${isSelected ? 'bg-primary-500 scale-100 shadow-lg' : 'bg-zinc-900/80 opacity-0 group-hover:opacity-100 scale-50'}`}
                           >
                             <CheckCircle2 className="size-4 text-white" />
                           </div>

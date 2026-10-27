@@ -1,12 +1,12 @@
-import { useForm } from "@tanstack/react-form";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "@tanstack/react-router";
-import { Effect } from "effect";
-import { ImageIcon, Loader2, Plus, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import { useForm } from '@tanstack/react-form';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
+import { Effect } from 'effect';
+import { ImageIcon, Loader2, Plus, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +14,7 @@ import {
   CarouselNext,
   CarouselPrevious,
   type CarouselApi,
-} from "@/components/ui/carousel";
+} from '@/components/ui/carousel';
 import {
   Dialog,
   DialogClose,
@@ -24,18 +24,18 @@ import {
   DialogHeader,
   DialogTitle,
   // DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { getAlbumByIdFn, ImportImagesToAlbumFn } from "@/data/album";
-import { ImportImagesFn } from "@/data/image";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { getAlbumByIdFn, ImportImagesToAlbumFn } from '@/data/album';
+import { ImportImagesFn } from '@/data/image';
 import {
   dashboardAlbumIdOptions,
   imageGalleryOptions,
-} from "@/data/query-options/dashboardQueryOptions";
-import { imageSchema } from "@/schemas/image";
-import { useAlbumStore } from "@/store/album";
+} from '@/data/query-options/dashboardQueryOptions';
+import { imageSchema } from '@/schemas/image';
+import { useAlbumStore } from '@/store/album';
 
 export function ImportImageModal() {
   const queryClient = useQueryClient();
@@ -44,7 +44,7 @@ export function ImportImageModal() {
     useAlbumStore();
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const { data: album } = useQuery({
-    queryKey: ["album-gallery", currentAlbumId],
+    queryKey: ['album-gallery', currentAlbumId],
     queryFn: async () => {
       const album = await getAlbumByIdFn({
         data: {
@@ -95,14 +95,14 @@ export function ImportImageModal() {
       queryKey: [...imageGalleryOptions().queryKey],
     });
     if (currentAlbumId) {
-      void queryClient.invalidateQueries({ queryKey: ["available-images", currentAlbumId] });
+      void queryClient.invalidateQueries({ queryKey: ['available-images', currentAlbumId] });
       void queryClient.invalidateQueries({
         queryKey: [...dashboardAlbumIdOptions(currentAlbumId).queryKey],
       });
     }
     void router.invalidate();
     form.reset();
-    toggleDialog("close", "");
+    toggleDialog('close', '');
   });
 
   const form = useForm({
@@ -133,23 +133,23 @@ export function ImportImageModal() {
         },
       };
       const currentMode = currentAlbumId
-        ? modeConfig["importToAlbum" as keyof typeof modeConfig]
-        : modeConfig["importImage" as keyof typeof modeConfig];
+        ? modeConfig['importToAlbum' as keyof typeof modeConfig]
+        : modeConfig['importImage' as keyof typeof modeConfig];
       if (!currentMode) return;
       const importWorkflow = Effect.gen(function* () {
         toast.loading(currentMode.msg, {
-          id: "import-images",
+          id: 'import-images',
         });
         yield* currentMode.action();
 
         toast.success(currentMode.success, {
-          id: "import-images",
+          id: 'import-images',
         });
       }).pipe(
-        Effect.catchAll((error) =>
+        Effect.catch((error) =>
           Effect.sync(() => {
             toast.error(`Failed to import images`, {
-              id: "import-images",
+              id: 'import-images',
             });
             console.error(error.message);
           }),
@@ -166,7 +166,7 @@ export function ImportImageModal() {
     }
     // setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
-    api.on("select", () => {
+    api.on('select', () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
@@ -174,7 +174,7 @@ export function ImportImageModal() {
     <Dialog
       open={isImageImportDialogOpen}
       onOpenChange={(open) => {
-        onOpenDialogChange("import", open);
+        onOpenDialogChange('import', open);
       }}
     >
       <DialogContent className="sm:max-w-6xl p-0 overflow-hidden border-zinc-800 bg-zinc-950">
@@ -189,13 +189,13 @@ export function ImportImageModal() {
                   <div className="max-sm:hidden size-16 relative group aspect-square overflow-hidden rounded-2xl border shadow-2xl">
                     <img
                       src={
-                        album?.coverImageUrl ?? "https://placehold.co/600x800?text=Invalid+Image"
+                        album?.coverImageUrl ?? 'https://placehold.co/600x800?text=Invalid+Image'
                       }
                       alt={album?.name}
                       className="object-cover transition-transform duration-500 group-hover:scale-105 "
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
-                          "https://placehold.co/600x800?text=Invalid+Image";
+                          'https://placehold.co/600x800?text=Invalid+Image';
                       }}
                     />
                   </div>
@@ -227,22 +227,22 @@ export function ImportImageModal() {
                   <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-colors hover:border-primary/30">
                     <div className="space-y-0.5">
                       <Label className="text-sm font-medium text-zinc-200">
-                        Visibility:{" "}
-                        <span className={field.state.value ? "text-primary" : "text-zinc-400"}>
-                          {field.state.value ? "Public" : "Private"}
+                        Visibility:{' '}
+                        <span className={field.state.value ? 'text-primary' : 'text-zinc-400'}>
+                          {field.state.value ? 'Public' : 'Private'}
                         </span>
                       </Label>
                       <p className="text-xs text-zinc-500">
                         {field.state.value
-                          ? "Images are visible to all users"
-                          : "Images are hidden to all users"}
+                          ? 'Images are visible to all users'
+                          : 'Images are hidden to all users'}
                       </p>
                     </div>
                     <Switch
                       checked={field.state.value}
                       onCheckedChange={(checked) => {
                         field.handleChange(checked);
-                        if (checked === true) form.setFieldValue("showPrivateToFollowers", false);
+                        if (checked === true) form.setFieldValue('showPrivateToFollowers', false);
                       }}
                       className="data-[state=checked]:bg-primary"
                     />
@@ -260,17 +260,17 @@ export function ImportImageModal() {
                           <div className="flex items-center justify-between p-4 rounded-xl bg-zinc-900/50 border border-zinc-800 transition-colors hover:border-primary/30 animate-in fade-in slide-in-from-bottom-4 duration-500">
                             <div className="space-y-0.5">
                               <Label className="text-sm font-medium text-zinc-200">
-                                Show Private:{" "}
+                                Show Private:{' '}
                                 <span
-                                  className={field.state.value ? "text-primary" : "text-zinc-400"}
+                                  className={field.state.value ? 'text-primary' : 'text-zinc-400'}
                                 >
-                                  {field.state.value ? "Show" : ` Hidden`}
+                                  {field.state.value ? 'Show' : ` Hidden`}
                                 </span>
                               </Label>
                               <p className="text-xs text-zinc-500">
                                 {field.state.value
-                                  ? "Images are visible to followers"
-                                  : "Images are hidden to followers"}
+                                  ? 'Images are visible to followers'
+                                  : 'Images are hidden to followers'}
                               </p>
                             </div>
                             <Switch
@@ -372,9 +372,9 @@ export function ImportImageModal() {
                             e.preventDefault();
                             e.stopPropagation();
                             field.pushValue({
-                              url: "",
-                              title: "",
-                              description: "",
+                              url: '',
+                              title: '',
+                              description: '',
                             });
                             setTimeout(() => {
                               const lastIndex = field.state.value.length - 1;
@@ -382,8 +382,8 @@ export function ImportImageModal() {
                               if (targetInput) {
                                 targetInput.focus();
                                 targetInput.scrollIntoView({
-                                  behavior: "smooth",
-                                  block: "nearest",
+                                  behavior: 'smooth',
+                                  block: 'nearest',
                                 });
                               }
                             }, 100);
@@ -429,7 +429,7 @@ export function ImportImageModal() {
             <form.Subscribe
               selector={(state) => state.values.image}
               children={(images) => {
-                const validImages = images?.filter((img) => img.url && img.url.trim() !== "") || [];
+                const validImages = images?.filter((img) => img.url && img.url.trim() !== '') || [];
 
                 if (validImages.length === 0) {
                   return (
@@ -458,7 +458,7 @@ export function ImportImageModal() {
                                 className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 "
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src =
-                                    "https://placehold.co/600x800?text=Invalid+Image";
+                                    'https://placehold.co/600x800?text=Invalid+Image';
                                 }}
                               />
                               <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
